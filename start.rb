@@ -1,5 +1,4 @@
 require 'ramaze'
-
 require 'auth-ac'
 
 require 'src/auth'
@@ -7,6 +6,9 @@ require 'src/access'
 require 'src/models.rb'
 require 'src/main'
 require 'src/ticket'
+
+require 'ruby-debug' 
+Debugger.start
 
 AuthAC.options(
   {
