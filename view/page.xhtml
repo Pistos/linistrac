@@ -1,0 +1,13 @@
+<html>
+
+<body>
+  <div id="navbar">
+    <?r if @user ?>
+    Logged in as #{@user.username} 
+    <?r end ?>
+  </div>
+  
+  #{@content}
+</body>
+
+</html>

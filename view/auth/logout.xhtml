@@ -1,0 +1,26 @@
+<html>
+
+<head>
+<title>Logout</title>
+</head>
+
+<body>
+
+<h2>Logout</h2>
+
+<?r if logged_in? ?>
+<div>
+Logged in as '#{@user.username}'.
+</div>
+<?r else ?>
+<div>
+You have logged out.<br />
+<a href="#{AuthAC.trait[ :auth_base_path ]}/login">Login</a>
+</div>
+<?r end ?>
+
+
+
+</body>
+
+</html>

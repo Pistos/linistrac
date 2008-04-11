@@ -1,0 +1,45 @@
+<html>
+
+<head>
+<title>Login</title>
+</head>
+
+<body>
+
+<h2>Login</h2>
+
+<?r if @error ?>
+<div class="error">
+    #{@error}
+</div>
+<?r end ?>
+
+<form action="#{AuthAC.trait[ :auth_base_path ]}/login" method="POST">
+<table>
+  <tr>
+    <td>*Username:</td>
+    <td><input type="text" name="username" /></td>
+  </tr>
+  <tr>
+    <td>*Password:</td>
+    <td><input type="password" name="password" /></td>
+  </tr>
+</table>
+<input type="submit" value="Login" /> or <a href="#{AuthAC.trait[ :auth_base_path ]}/register">create a new account</a>
+</form>
+
+<div>
+* indicates required entry
+</div>
+
+<?r if logged_in? ?>
+<div>
+Logged in as '#{@user.username}'.
+</div>
+<?r end ?>
+
+
+
+</body>
+
+</html>

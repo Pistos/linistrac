@@ -1,4 +1,6 @@
 class TicketController < Ramaze::Controller
+  layout '/page'
+  
   def index
   end
   
@@ -9,6 +11,8 @@ class TicketController < Ramaze::Controller
   end
   
   def create
+    if request.post?
+    end
   end
   
   def delete

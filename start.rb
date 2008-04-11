@@ -2,6 +2,8 @@ require 'ramaze'
 
 require 'auth-ac'
 
+require 'src/auth'
+require 'src/access'
 require 'src/main'
 require 'src/models'
 
@@ -17,4 +19,4 @@ AuthAC.options(
   }
 )
 
-Ramaze.start :adapter => :mongrel, :port => 8005
+Ramaze.start :adapter => :mongrel, :port => 7005
