@@ -1,4 +1,5 @@
 class TicketController < Ramaze::Controller
+  map '/ticket'
   layout '/page'
   
   def index
@@ -11,6 +12,7 @@ class TicketController < Ramaze::Controller
   end
   
   def create
+    @severities = Severity.sort_by { |s| s.ordinal }
     if request.post?
     end
   end

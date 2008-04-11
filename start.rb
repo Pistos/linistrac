@@ -4,8 +4,9 @@ require 'auth-ac'
 
 require 'src/auth'
 require 'src/access'
+require 'src/models.rb'
 require 'src/main'
-require 'src/models'
+require 'src/ticket'
 
 AuthAC.options(
   {

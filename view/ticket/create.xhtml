@@ -1,0 +1,14 @@
+<form method="POST">
+  <table>
+    <tr>
+      <td>Severity</td>
+      <td>
+        <select name="severity">
+          <?r @severities.each do |s| ?>
+            <option value="#{s.ordinal}">#{s.name}</option>
+          <?r end ?>
+        </select>
+      </td>
+    </tr>
+  </table>
+</form>

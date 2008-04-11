@@ -1,3 +1,5 @@
 require 'm4dbi'
 
-acquire 'models/*.rb'
+$dbh = DBI.connect( "DBI:Pg:linis-trac", "linis", "linis" )
+
+acquire 'src/models/*.rb'
