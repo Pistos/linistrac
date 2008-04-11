@@ -1,14 +1,56 @@
 <form method="POST">
   <table>
     <tr>
-      <td>Severity</td>
+      <td>Creator:</td>
+      <td>#{@creator_name}</td>
+    </tr>
+    <tr>
+      <td>Status:</td>
+      <td>#{@status}</td>
+    </tr>
+    <tr>
+      <td>Title:</td>
+      <td><input type="text" name="title" size="60"/></td>
+    </tr>
+    <tr>
+      <td>Severity:</td>
       <td>
         <select name="severity">
           <?r @severities.each do |s| ?>
-            <option value="#{s.ordinal}">#{s.name}</option>
+            <option value="#{s.id}" #{s == Severity.default ? 'selected' : ''}>#{s.name}</option>
           <?r end ?>
         </select>
       </td>
     </tr>
+    <tr>
+      <td>Priority:</td>
+      <td>
+        <select name="priority">
+          <?r @priorities.each do |p| ?>
+            <option #{p == @default_priority ? 'selected' : ''}>#{p}</option>
+          <?r end ?>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Description:</td>
+      <td><textarea name="description" cols="60" rows="20"></textarea></td>
+    </tr>
+    <tr>
+      <td>Group:</td>
+      <td>
+        <select name="group">
+          <?r @groups.each do |g| ?>
+            <option value="#{g.id}">#{g.name}</option>
+          <?r end ?>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Tags<br/>(comma-separated):</td>
+      <td><input type="text" name="tags" size="60"/></td>
+    </tr>
   </table>
+  
+  <input type="submit" value="Create"/>
 </form>
