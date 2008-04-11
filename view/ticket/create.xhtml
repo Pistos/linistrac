@@ -10,14 +10,14 @@
     </tr>
     <tr>
       <td>Title:</td>
-      <td><input type="text" name="title" size="60"/></td>
+      <td><input type="text" name="title" size="60" value="#{@title}"/></td>
     </tr>
     <tr>
       <td>Severity:</td>
       <td>
         <select name="severity_id">
           <?r @severities.each do |s| ?>
-            <option value="#{s.id}" #{s == Severity.default ? 'selected' : ''}>#{s.name}</option>
+            <option value="#{s.id}" #{s == @severity ? 'selected' : ''}>#{s.name}</option>
           <?r end ?>
         </select>
       </td>
@@ -27,28 +27,28 @@
       <td>
         <select name="priority">
           <?r @priorities.each do |p| ?>
-            <option #{p == @default_priority ? 'selected' : ''}>#{p}</option>
+            <option #{p == @priority ? 'selected' : ''}>#{p}</option>
           <?r end ?>
         </select>
       </td>
     </tr>
     <tr>
       <td>Description:</td>
-      <td><textarea name="description" cols="60" rows="20"></textarea></td>
+      <td><textarea name="description" cols="60" rows="20">#{@description}</textarea></td>
     </tr>
     <tr>
       <td>Group:</td>
       <td>
         <select name="group_id">
           <?r @groups.each do |g| ?>
-            <option value="#{g.id}">#{g.name}</option>
+            <option value="#{g.id}" #{g.id == @group_id ? 'selected' : '' }>#{g.name}</option>
           <?r end ?>
         </select>
       </td>
     </tr>
     <tr>
       <td>Tags<br/>(comma-separated):</td>
-      <td><input type="text" name="tags" size="60"/></td>
+      <td><input type="text" name="tags" size="60" value="#{@tags}"/></td>
     </tr>
   </table>
   

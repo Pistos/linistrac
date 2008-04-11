@@ -17,9 +17,20 @@ class TicketController < Ramaze::Controller
   def create
     @severities = Severity.sort_by { |s| s.ordinal }
     @priorities = (MIN_PRIORITY..MAX_PRIORITY)
-    @default_priority = 2
     @status = Status.initial
     @groups = TicketGroup.all
+    
+    @description = request[ 'description' ]
+    @title = request[ 'title' ]
+    @tags = request[ 'tags' ]
+    @group_id = request[ 'group_id' ] ? request[ 'group_id' ].to_i : nil
+    @severity = request[ 'severity_id' ] ? Severity[ request[ 'severity_id' ].to_i ] : Severity.default
+    @priority = request[ 'priority' ] ? request[ 'priority' ].to_i : 2
+    if @priority < MIN_PRIORITY
+      @priority = MIN_PRIORITY
+    elsif @priority > MAX_PRIORITY
+      @priority = MAX_PRIORITY
+    end
     
     @user = session[ :user ]
     if @user
@@ -29,22 +40,16 @@ class TicketController < Ramaze::Controller
     end
     
     if request.post?
-      priority = request[ 'priority' ].to_i
-      if priority < MIN_PRIORITY
-        priority = MIN_PRIORITY
-      elsif priority > MAX_PRIORITY
-        priority = MAX_PRIORITY
-      end
       new_ticket = nil
       begin
         new_ticket = Ticket.create(
-          :severity_id => request[ 'severity_id' ].to_i,
-          :priority => priority,
+          :severity_id => @severity.id,
+          :priority => @priority,
           :creator_id => @user ? @user.id : nil,
-          :group_id => request[ 'group_id' ].to_i,
+          :group_id => @group_id,
           :status_id => @status.id,
-          :title => request[ 'title' ],
-          :description => request[ 'description' ],
+          :title => @title,
+          :description => @description,
           :tags => request[ 'tags' ]
         )
       rescue Object => e
