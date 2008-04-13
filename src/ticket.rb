@@ -9,6 +9,7 @@ class TicketController < Ramaze::Controller
   end
   
   def list
+    @tickets = Ticket.all
   end
   
   def view
