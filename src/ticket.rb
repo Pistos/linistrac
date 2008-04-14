@@ -67,7 +67,7 @@ class TicketController < Ramaze::Controller
         end
       end
       if new_ticket
-        @success = "Created ticket ##{new_ticket.id}."
+        @success = "Created <a href='/ticket/view/#{new_ticket.id}'>ticket ##{new_ticket.id}</a>."
       elsif @error.nil?
         @error = "Failed to create new ticket."
       end
