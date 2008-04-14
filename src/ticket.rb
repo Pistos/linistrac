@@ -14,8 +14,31 @@ class TicketController < Ramaze::Controller
   end
   
   def view( ticket_id )
-    @t = Ticket[ ticket_id.to_i ]
+    ticket_id = ticket_id.to_i
+    @t = Ticket[ ticket_id ]
     @user = session[ :user ]
+    
+    if request.post?
+      if @user
+        creator_id = @user.id
+      end
+      begin
+        new_comment = Comment.create(
+          :ticket_id => ticket_id,
+          :creator_id => creator_id,
+          :text => request[ 'text' ]
+        )
+      rescue DBI::Error => e
+        case e.message
+          when /text_length/
+            'Comment text too short.'
+          when /value too long for type/
+            @error = 'Text too long.'
+          else
+            raise e
+        end
+      end
+    end
   end
   
   def create
@@ -56,7 +79,7 @@ class TicketController < Ramaze::Controller
           :description => @description,
           :tags => @tags
         )
-      rescue Object => e
+      rescue DBI::Error => e
         case e.message
           when /title_length/
             @error = 'Title too short.'

@@ -75,3 +75,21 @@ CREATE TABLE tickets (
     tags VARCHAR( 1024 ),
     PRIMARY KEY( id )
 );
+
+CREATE TABLE comments (
+    id SERIAL,
+    ticket_id INTEGER NOT NULL REFERENCES tickets( id ),
+    time_created TIMESTAMP NOT NULL DEFAULT NOW(),
+    creator_id INTEGER REFERENCES users( id ),
+    text VARCHAR( 8192 ) NOT NULL CONSTRAINT text_length CHECK ( LENGTH( text ) > 3 ),
+    PRIMARY KEY( id )
+);
+
+CREATE TABLE ticket_changes (
+    id SERIAL,
+    ticket_id INTEGER NOT NULL REFERENCES tickets( id ),
+    changee VARCHAR( 256 ) NOT NULL,
+    time_changed TIMESTAMP NOT NULL DEFAULT NOW(),
+    changer_id INTEGER NOT NULL REFERENCES users( id ),
+    PRIMARY KEY( id )
+);
