@@ -80,7 +80,7 @@ CREATE TABLE comments (
     id SERIAL,
     ticket_id INTEGER NOT NULL REFERENCES tickets( id ),
     time_created TIMESTAMP NOT NULL DEFAULT NOW(),
-    creator_id INTEGER REFERENCES users( id ),
+    author_id INTEGER REFERENCES users( id ),
     text VARCHAR( 8192 ) NOT NULL CONSTRAINT text_length CHECK ( LENGTH( text ) > 3 ),
     PRIMARY KEY( id )
 );

@@ -35,12 +35,18 @@
   <h3>Comments</h3>
 
   <?r @t.comments.each do |comment| ?>
-  <div class="comment">#{comment.text}</div>
+  <div class="comment">
+    <span class="header">
+      <span class="author">#{comment.author_name}</span> at
+      <span class="timestamp">#{comment.time_created_s}</span>
+    </span>
+    <div class="text">#{comment.text}</div>
+  </div>
   <?r end ?>
 
 </div>
 
 <form method="POST" id="add-comment">
-  <textarea name="text" rows="10" cols="60"></textarea><br/>
+  <textarea name="text" rows="7" cols="60"></textarea><br/>
   <input type="submit" value="Add Comment"/>
 </form>

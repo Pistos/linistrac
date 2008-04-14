@@ -95,3 +95,17 @@ table.ticket-list td {
 table.ticket-list tr.odd-row td {
     background-color: #EEEEEE;
 }
+
+div.comment {
+    border-top: 1px solid #999999;
+    padding: 1em;
+}
+
+div.comment .text {
+    padding: 1em;
+    white-space: pre-line;
+}
+
+div.comment .header {
+    color: #666699;
+}

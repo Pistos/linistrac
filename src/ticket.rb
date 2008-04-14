@@ -20,12 +20,12 @@ class TicketController < Ramaze::Controller
     
     if request.post?
       if @user
-        creator_id = @user.id
+        author_id = @user.id
       end
       begin
         new_comment = Comment.create(
           :ticket_id => ticket_id,
-          :creator_id => creator_id,
+          :author_id => author_id,
           :text => request[ 'text' ]
         )
       rescue DBI::Error => e
