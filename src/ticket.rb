@@ -24,9 +24,9 @@ class TicketController < Ramaze::Controller
     @status = Status.initial
     @groups = TicketGroup.all
     
-    @description = request[ 'description' ]
-    @title = request[ 'title' ]
-    @tags = request[ 'tags' ]
+    @description = c request[ 'description' ]
+    @title = c request[ 'title' ]
+    @tags = c request[ 'tags' ]
     @group_id = request[ 'group_id' ] ? request[ 'group_id' ].to_i : nil
     @severity = request[ 'severity_id' ] ? Severity[ request[ 'severity_id' ].to_i ] : Severity.default
     @priority = request[ 'priority' ] ? request[ 'priority' ].to_i : 2
@@ -54,7 +54,7 @@ class TicketController < Ramaze::Controller
           :status_id => @status.id,
           :title => @title,
           :description => @description,
-          :tags => request[ 'tags' ]
+          :tags => @tags
         )
       rescue Object => e
         case e.message
