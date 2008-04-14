@@ -3,6 +3,7 @@
 <head>
 
 <link rel="stylesheet" type="text/css" href="/page.css"/>
+<title>LinisTrac</title>
 
 </head>
 
@@ -12,7 +13,11 @@
     <a href="/ticket/create">Create</a>
   
     <?r if @user ?>
-    Logged in as #{@user.username} 
+    <a href="/auth/logout">Logout</a>
+    Logged in as #{@user.username}
+    <?r else ?>
+    <a href="/auth/register">Register</a>
+    <a href="/auth/login">Login</a>
     <?r end ?>
   </div>
   

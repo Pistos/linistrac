@@ -22,4 +22,4 @@ AuthAC.options(
   }
 )
 
-Ramaze.start :adapter => :mongrel, :port => 7005
+Ramaze.start :adapter => :mongrel, :port => 8004

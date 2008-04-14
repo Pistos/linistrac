@@ -1,4 +1,6 @@
-<table>
+<h2>Tickets</h2>
+
+<table class="ticket-list">
 
   <tr>
     <th>ID</th>
@@ -16,7 +18,7 @@
 
   <tr>
     <td><a href="view/#{ticket.id}">#{ticket.id}</a></td>
-    <td>#{ticket.title}</td>
+    <td><a href="view/#{ticket.id}">#{ticket.title}</a></td>
     <td>#{ticket.severity}</td>
     <td>#{ticket.priority}</td>
     <td>#{ticket.creator ? ticket.creator.username : 'Anonymous'}</td>

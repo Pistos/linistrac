@@ -1,11 +1,50 @@
-body * {
+body {
+    font-size: 14px;
+    font-family: sans-serif;
+    padding: 20px;
+}
+td, th {
     font-size: 12px;
     font-family: sans-serif;
 }
 
+a {
+    color: #003399;
+    text-decoration: none;
+    background-color: #EEEEFF;
+}
+a:visited {
+    color: #0055BB;
+}
+a:hover {
+    background-color: #FFFFFF;
+}
+
+div#navbar {
+    margin: 0px 0px 1em 0px;
+    padding: 1em;
+    /* border: 1px solid black; */
+    background-color: #F0F0F0;
+}
+
+div#navbar a {
+    padding: 0.5em 1em;
+    font-size: 12px;
+}
+
+div.error {
+    border: 1px solid #660000;
+    color: #660000;
+    font-weight: bold;
+    background-color: #FFEEEE;
+    padding: 1em;
+    margin: 1em;
+}
+
+
 div.ticket {
     border: 1px solid #000066;
-    margin: 0.5em;
+    margin: 0.5em 0px;
     padding: 1em;
 }
 
@@ -23,4 +62,14 @@ div.ticket td {
 div.ticket .description-title {
     color: #999999;
     border-bottom: 1px solid #999999;
+}
+
+table.ticket-list {
+    border-collapse: collapse;
+    
+}
+
+table.ticket-list td {
+    border: 1px solid #999999;
+    padding: 0.1em 0.5em;
 }
