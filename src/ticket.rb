@@ -62,6 +62,8 @@ class TicketController < Ramaze::Controller
             @error = 'Title too short.'
           when /description_length/
             @error = 'Description too short.'
+          when /value too long for type/
+            @error = 'Text too long.'
           else
             raise e
         end
