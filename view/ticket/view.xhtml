@@ -47,6 +47,18 @@
 </div>
 
 <form method="POST" id="add-comment">
-  <textarea name="text" rows="7" cols="60"></textarea><br/>
+  <table>
+  <tr>
+    <td>Your name:</td>
+    <td>
+      <?r if @user ?>
+        #{@user.username}
+      <?r else ?>
+        <input type="text" name="author-name" cols="30"/>
+      <?r end ?>
+    </td>
+  </tr>
+  <tr><td>Comment:</td><td><textarea name="text" rows="7" cols="60"></textarea></td></tr>
+  </table>
   <input type="submit" value="Add Comment"/>
 </form>

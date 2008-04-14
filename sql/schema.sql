@@ -81,7 +81,9 @@ CREATE TABLE comments (
     ticket_id INTEGER NOT NULL REFERENCES tickets( id ),
     time_created TIMESTAMP NOT NULL DEFAULT NOW(),
     author_id INTEGER REFERENCES users( id ),
+    author_name VARCHAR( 256 ),
     text VARCHAR( 8192 ) NOT NULL CONSTRAINT text_length CHECK ( LENGTH( text ) > 3 ),
+    CONSTRAINT has_author CHECK ( author_id IS NOT NULL OR author_name IS NOT NULL ),
     PRIMARY KEY( id )
 );
 

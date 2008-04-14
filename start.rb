@@ -1,5 +1,6 @@
 require 'ramaze'
 require 'auth-ac'
+require 'ramaze/spec/helper/simple_http'
 
 require 'src/auth'
 require 'src/access'

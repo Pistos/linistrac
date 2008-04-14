@@ -4,6 +4,7 @@ class TicketController < Ramaze::Controller
   
   MIN_PRIORITY = 1
   MAX_PRIORITY = 3
+  AKISMET_KEY = "your key here"
   
   def index
   end
@@ -19,24 +20,56 @@ class TicketController < Ramaze::Controller
     @user = session[ :user ]
     
     if request.post?
+      comment_data = {
+        :ticket_id => ticket_id,
+        :text => request[ 'text' ]
+      }
       if @user
-        author_id = @user.id
-      end
-      begin
-        new_comment = Comment.create(
-          :ticket_id => ticket_id,
-          :author_id => author_id,
-          :text => request[ 'text' ]
-        )
-      rescue DBI::Error => e
-        case e.message
-          when /text_length/
-            'Comment text too short.'
-          when /value too long for type/
-            @error = 'Text too long.'
-          else
-            raise e
+        comment_data[ :author_id ] = @user.id
+        author_name = @user.username
+      else
+        author_name = request[ 'author-name' ]
+        if author_name.nil? or author_name.strip.empty?
+          author_name = 'Anonymous'
         end
+        comment_data[ :author_name ] = author_name
+      end
+      
+      # Check against Akismet first
+      http = SimpleHttp.new "#{AKISMET_KEY}.rest.akismet.com/1.1/comment-check"
+      http.request_headers[ 'User-Agent' ] = 'LinisTrac/0.1.0 | LinisTrac/0.1.0'
+      post_params = {
+        'blog' => 'http://linis.purepistos.net',
+        'user_ip' => request.env[ 'REMOTE_ADDR' ],
+        'user_agent' => request.env[ 'HTTP_USER_AGENT' ],
+        'referrer' => request.env[ 'HTTP_REFERER' ],
+        'comment_type' => 'comment',
+        'comment_author' => author_name,
+        'comment_content' => comment_data[ :text ],
+        # and all request.env
+        #'permalink' => '',
+        #'comment_author_email' => '',
+        #'comment_author_url' => '',
+      }
+      akismet_result = http.post( post_params )
+      
+      if akismet_result == 'false'
+        begin
+          new_comment = Comment.create( comment_data )
+        rescue DBI::Error => e
+          case e.message
+            when /text_length/
+              'Comment text too short.'
+            when /value too long for type/
+              @error = 'Text too long.'
+            else
+              raise e
+          end
+        end
+      elsif akismet_result == 'true'
+        @error = "Your comment seems to be spam!"
+      else
+        @error = "Bad Akismet result: '#{akismet_result}'"
       end
     end
   end
