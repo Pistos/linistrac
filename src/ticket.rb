@@ -10,10 +10,12 @@ class TicketController < Ramaze::Controller
   
   def list
     @tickets = Ticket.all
+    @user = session[ :user ]
   end
   
   def view( ticket_id )
     @t = Ticket[ ticket_id.to_i ]
+    @user = session[ :user ]
   end
   
   def create
