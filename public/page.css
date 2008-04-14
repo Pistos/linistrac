@@ -78,6 +78,10 @@ div.ticket .description-title {
     border-bottom: 1px solid #999999;
 }
 
+div.description {
+    white-space: pre-line;
+}
+
 table.ticket-list {
     border-collapse: collapse;
     
