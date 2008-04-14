@@ -4,7 +4,6 @@ class TicketController < Ramaze::Controller
   
   MIN_PRIORITY = 1
   MAX_PRIORITY = 3
-  AKISMET_KEY = "your key here"
   
   def index
   end
@@ -36,7 +35,8 @@ class TicketController < Ramaze::Controller
       end
       
       # Check against Akismet first
-      http = SimpleHttp.new "#{AKISMET_KEY}.rest.akismet.com/1.1/comment-check"
+      akismet_key = Configuration.get( 'akismet_key' )
+      http = SimpleHttp.new "#{akismet_key}.rest.akismet.com/1.1/comment-check"
       http.request_headers[ 'User-Agent' ] = 'LinisTrac/0.1.0 | LinisTrac/0.1.0'
       post_params = {
         'blog' => 'http://linis.purepistos.net',

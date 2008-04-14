@@ -95,3 +95,9 @@ CREATE TABLE ticket_changes (
     changer_id INTEGER NOT NULL REFERENCES users( id ),
     PRIMARY KEY( id )
 );
+
+CREATE TABLE configuration (
+    key VARCHAR( 256 ) NOT NULL UNIQUE,
+    value VARCHAR( 2048 ),
+    PRIMARY KEY( key )
+);
