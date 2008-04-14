@@ -6,6 +6,11 @@ body {
 td, th {
     font-size: 12px;
     font-family: sans-serif;
+    vertical-align: top;
+}
+
+th {
+    text-align: left;
 }
 
 a {
@@ -25,11 +30,11 @@ div#navbar {
     padding: 1em;
     /* border: 1px solid black; */
     background-color: #F0F0F0;
+    font-size: 12px;
 }
 
 div#navbar a {
     padding: 0.5em 1em;
-    font-size: 12px;
 }
 
 div.error {
@@ -37,6 +42,15 @@ div.error {
     color: #660000;
     font-weight: bold;
     background-color: #FFEEEE;
+    padding: 1em;
+    margin: 1em;
+}
+
+div.success {
+    border: 1px solid #006600;
+    color: #006600;
+    font-weight: bold;
+    background-color: #EEFFEE;
     padding: 1em;
     margin: 1em;
 }
@@ -72,4 +86,8 @@ table.ticket-list {
 table.ticket-list td {
     border: 1px solid #999999;
     padding: 0.1em 0.5em;
+}
+
+table.ticket-list tr.odd-row td {
+    background-color: #EEEEEE;
 }

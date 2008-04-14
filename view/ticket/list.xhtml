@@ -14,9 +14,9 @@
     <th>Resolution</th>
   </tr>
 
-<?r @tickets.each do |ticket| ?>
+<?r @tickets.each_with_index do |ticket,i| ?>
 
-  <tr>
+  <tr #{i % 2 == 1 ? 'class="odd-row"' : ''}>
     <td><a href="view/#{ticket.id}">#{ticket.id}</a></td>
     <td><a href="view/#{ticket.id}">#{ticket.title}</a></td>
     <td>#{ticket.severity}</td>
