@@ -1,7 +1,16 @@
 <html>
 
+<head>
+
+<link rel="stylesheet" type="text/css" href="/page.css"/>
+
+</head>
+
 <body>
   <div id="navbar">
+    <a href="/ticket/list">Tickets</a>
+    <a href="/ticket/create">Create</a>
+  
     <?r if @user ?>
     Logged in as #{@user.username} 
     <?r end ?>

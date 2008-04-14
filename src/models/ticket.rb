@@ -5,6 +5,14 @@ class Ticket < DBI::Model( :tickets )
   def creator
     User[ creator_id ]
   end
+  def creator_name
+    u = creator
+    if u
+      u.username
+    else
+      'Anonymous'
+    end
+  end
   def time_created_s
     time_created.strftime "%Y-%m-%d %H:%M"
   end

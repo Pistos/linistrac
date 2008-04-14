@@ -1,0 +1,26 @@
+body * {
+    font-size: 12px;
+    font-family: sans-serif;
+}
+
+div.ticket {
+    border: 1px solid #000066;
+    margin: 0.5em;
+    padding: 1em;
+}
+
+div.ticket .title {
+    font-size: 16pt;
+    font-weight: bold;
+    margin: 0px 0px 0.5em;
+    color: #003399;
+}
+
+div.ticket td {
+    padding: 0px 1em 0.25em;
+}
+
+div.ticket .description-title {
+    color: #999999;
+    border-bottom: 1px solid #999999;
+}

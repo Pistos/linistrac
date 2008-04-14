@@ -12,7 +12,8 @@ class TicketController < Ramaze::Controller
     @tickets = Ticket.all
   end
   
-  def view
+  def view( ticket_id )
+    @t = Ticket[ ticket_id.to_i ]
   end
   
   def create

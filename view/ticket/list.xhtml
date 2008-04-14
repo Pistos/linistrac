@@ -15,7 +15,7 @@
 <?r @tickets.each do |ticket| ?>
 
   <tr>
-    <td>#{ticket.id}</td>
+    <td><a href="view/#{ticket.id}">#{ticket.id}</a></td>
     <td>#{ticket.title}</td>
     <td>#{ticket.severity}</td>
     <td>#{ticket.priority}</td>

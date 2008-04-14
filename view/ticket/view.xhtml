@@ -1,0 +1,33 @@
+<div class="ticket">
+
+<h3 class="title">#{@t.title}</h3>
+
+<table>
+<tr>
+  <td>Opened:</td><td>#{@t.time_created_s}</td>
+  <td>Updated:</td><td>#{@t.time_updated_s}</td>
+</tr>
+<tr>
+  <td>Status:</td><td>#{@t.status}</td>
+  <td>Created by:</td><td>#{@t.creator_name}</td>
+</tr>
+<tr>
+  <td>Severity:</td><td>#{@t.severity}</td>
+  <td>Priority:</td><td>#{@t.priority}</td>
+</tr>
+<tr>
+  <td>Group:</td><td>#{@t.group}</td>
+</tr>
+<tr>
+  <td>Tags:</td><td>#{@t.tags}</td>
+</tr>
+
+</table>
+
+<h3 class="description-title">Description</h3>
+
+<div class="description">
+#{@t.description}
+</div>
+
+</div>
