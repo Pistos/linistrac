@@ -2,6 +2,7 @@ require 'digest/sha1'
 
 class AccessController < Ramaze::Controller
     map "/access"
+    layout '/page'
     
     include AuthAC
     

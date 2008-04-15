@@ -34,14 +34,16 @@
 
   <h3>Comments</h3>
 
-  <?r @t.comments.each do |comment| ?>
-  <div class="comment">
-    <span class="header">
-      <span class="author">#{comment.author_name}</span> at
-      <span class="timestamp">#{comment.time_created_s}</span>
-    </span>
-    <div class="text">#{comment.text}</div>
-  </div>
+  <?r @t.comments.each do |comment|
+    next if comment.in_moderation
+    ?>
+    <div class="comment">
+      <span class="header">
+        <span class="author">#{comment.author_name}</span> at
+        <span class="timestamp">#{comment.time_created_s}</span>
+      </span>
+      <div class="text">#{comment.text}</div>
+    </div>
   <?r end ?>
 
 </div>

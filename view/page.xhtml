@@ -11,25 +11,29 @@
   <div id="navbar">
     <a href="/ticket/list">Tickets</a>
     <a href="/ticket/create">Create</a>
-  
+    
     <?r if @user ?>
-    <a href="/auth/logout">Logout</a>
-    Logged in as #{@user.username}
+      <?r if @user.admin? ?>
+        <a href="/admin">Admin</a>
+      <?r end ?>
+    
+      <a href="/auth/logout">Logout</a>
+      Logged in as #{@user.username}
     <?r else ?>
-    <a href="/auth/register">Register</a>
-    <a href="/auth/login">Login</a>
+      <a href="/auth/register">Register</a>
+      <a href="/auth/login">Login</a>
     <?r end ?>
   </div>
   
-  <?r if @success ?>
+  <?r if @success or flash[ :success ] ?>
   <div class="success">
-    #{@success}
+    #{@success || flash[ :success ]}
   </div>
   <?r end ?>
   
-  <?r if @error ?>
+  <?r if @error or flash[ :error ] ?>
   <div class="error">
-    #{@error}
+    #{@error || flash[ :error ]}
   </div>
   <?r end ?>
   

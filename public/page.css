@@ -82,17 +82,16 @@ div.description {
     white-space: pre-line;
 }
 
-table.ticket-list {
+table.list {
     border-collapse: collapse;
-    
 }
 
-table.ticket-list td {
+table.list td {
     border: 1px solid #999999;
     padding: 0.1em 0.5em;
 }
 
-table.ticket-list tr.odd-row td {
+table.list tr.odd-row td {
     background-color: #EEEEEE;
 }
 

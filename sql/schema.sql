@@ -73,6 +73,7 @@ CREATE TABLE tickets (
     title VARCHAR( 256 ) NOT NULL CONSTRAINT title_length CHECK ( LENGTH( title ) > 3 ),
     description VARCHAR( 8192 ) NOT NULL CONSTRAINT description_length CHECK ( LENGTH( description ) > 3 ),
     tags VARCHAR( 1024 ),
+    in_moderation BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY( id )
 );
 
@@ -83,6 +84,7 @@ CREATE TABLE comments (
     author_id INTEGER REFERENCES users( id ),
     author_name VARCHAR( 256 ),
     text VARCHAR( 8192 ) NOT NULL CONSTRAINT text_length CHECK ( LENGTH( text ) > 3 ),
+    in_moderation BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT has_author CHECK ( author_id IS NOT NULL OR author_name IS NOT NULL ),
     PRIMARY KEY( id )
 );

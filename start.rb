@@ -7,6 +7,7 @@ require 'src/access'
 require 'src/models.rb'
 require 'src/main'
 require 'src/ticket'
+require 'src/admin'
 
 require 'ruby-debug' 
 Debugger.start

@@ -1,0 +1,21 @@
+<?r if @comments.empty? ?>
+
+  <p>No comments need moderation.</p>
+
+<?r else ?>
+
+  <table class="list">
+
+  <?r @comments.each do |comment| ?>
+  
+  <tr>
+    <td><a href="/admin/comment_approve/#{comment.id}">Approve</a></td>
+    <td><a href="/admin/comment_delete/#{comment.id}">Delete</a></td>
+    <td>#{comment.text[ 0..50 ]}</td>
+  </tr>
+  
+  <?r end ?>
+  
+  </table>
+
+<?r end ?>

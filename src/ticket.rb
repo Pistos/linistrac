@@ -19,6 +19,8 @@ class TicketController < Ramaze::Controller
     @user = session[ :user ]
     
     if request.post?
+      # New comment
+      
       comment_data = {
         :ticket_id => ticket_id,
         :text => request[ 'text' ]
@@ -53,23 +55,22 @@ class TicketController < Ramaze::Controller
       }
       akismet_result = http.post( post_params )
       
-      if akismet_result == 'false'
-        begin
-          new_comment = Comment.create( comment_data )
-        rescue DBI::Error => e
-          case e.message
-            when /text_length/
-              'Comment text too short.'
-            when /value too long for type/
-              @error = 'Text too long.'
-            else
-              raise e
-          end
+      if akismet_result == 'true' 
+        @error = "Your comment seems to be spam; it must be approved before becoming visible."
+        comment_data[ :in_moderation ] = true
+      end
+      
+      begin
+        new_comment = Comment.create( comment_data )
+      rescue DBI::Error => e
+        case e.message
+          when /text_length/
+            'Comment text too short.'
+          when /value too long for type/
+            @error = 'Text too long.'
+          else
+            raise e
         end
-      elsif akismet_result == 'true'
-        @error = "Your comment seems to be spam!"
-      else
-        @error = "Bad Akismet result: '#{akismet_result}'"
       end
     end
   end
