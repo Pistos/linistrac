@@ -57,7 +57,7 @@ class TicketController < Ramaze::Controller
       
       if akismet_result == 'true' 
         @error = "Your comment seems to be spam; it must be approved before becoming visible."
-        comment_data[ :in_moderation ] = true
+        comment_data[ :is_spam ] = true
       end
       
       begin
@@ -137,7 +137,7 @@ class TicketController < Ramaze::Controller
       
       if akismet_result == 'true' 
         @error = "Your ticket seems to be spam; it must be approved before becoming visible."
-        ticket_data[ :in_moderation ] = true
+        ticket_data[ :is_spam ] = true
       end
       
       begin

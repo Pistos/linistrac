@@ -35,7 +35,7 @@
   <h3>Comments</h3>
 
   <?r @t.comments.each do |comment|
-    next if comment.in_moderation
+    next if comment.is_spam
     ?>
     <div class="comment">
       <span class="header">
