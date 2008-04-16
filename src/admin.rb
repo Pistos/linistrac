@@ -18,7 +18,31 @@ class AdminController < Ramaze::Controller
   def comment
     requires_flag 'admin'
     @user = session[ :user ]
-    @comments = Comment.where( :in_moderation => true )
+    @unmoderated_comments = Comment.s %{
+      SELECT c.*
+      FROM comments c
+      WHERE c.in_moderation
+      ORDER BY c.id
+    }
+    @page = request[ 'page' ].to_i
+    if @page < 0
+      @page = 0
+    end
+    @page_size = request[ 'page-size' ].to_i
+    if @page_size < 1
+      @page_size = 10
+    end
+    @comments = Comment.s(
+      %{
+        SELECT c.*
+        FROM comments c
+        ORDER BY c.id DESC
+        OFFSET ?
+        LIMIT ?
+      },
+      @page * @page_size,
+      @page_size
+    )
   end
   
   def comment_approve( comment_id )
@@ -32,6 +56,7 @@ class AdminController < Ramaze::Controller
     end
     redirect Rs( :comment )
   end
+  
   def comment_delete( comment_id )
     requires_flag 'admin'
     

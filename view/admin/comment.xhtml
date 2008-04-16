@@ -1,4 +1,6 @@
-<?r if @comments.empty? ?>
+<h3>Comments Needing Moderation</h3>
+
+<?r if @unmoderated_comments.empty? ?>
 
   <p>No comments need moderation.</p>
 
@@ -6,12 +8,12 @@
 
   <table class="list">
 
-  <?r @comments.each do |comment| ?>
+  <?r @unmoderated_comments.each do |comment| ?>
   
   <tr>
     <td><a href="/admin/comment_approve/#{comment.id}">Approve</a></td>
     <td><a href="/admin/comment_delete/#{comment.id}">Delete</a></td>
-    <td>#{comment.text[ 0..50 ]}</td>
+    <td>#{comment.text[ 0..70 ]}</td>
   </tr>
   
   <?r end ?>
@@ -19,3 +21,44 @@
   </table>
 
 <?r end ?>
+
+<h3>All Comments</h3>
+
+<div>
+<a href="?page=#{@page+1}">Earlier</a>
+<?r if @page > 0 ?>
+  <a href="?page=#{@page-1}">Later</a>
+<?r end ?>
+</div>
+  
+<?r if @comments.empty? ?>
+
+  <p>No comments.</p>
+  
+<?r else ?>
+
+  <table class="list">
+  
+  <tr>
+    <th>ID</th>
+    <th colspan="2">Actions</th>
+    <th>Time</th>
+    <th>Text</th>
+  </tr>
+  
+  <?r @comments.each do |comment| ?>
+  
+  <tr>
+    <td>#{comment.id}</td>
+    <td><a href="/admin/comment_approve/#{comment.id}">Approve</a></td>
+    <td><a href="/admin/comment_delete/#{comment.id}">Delete</a></td>
+    <td>#{comment.time_created_s}</td>
+    <td>#{comment.text[ 0..70 ]}</td>
+  </tr>
+  
+  <?r end ?>
+  
+  </table>
+  
+<?r end ?>
+
