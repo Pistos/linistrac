@@ -53,7 +53,7 @@ class TicketController < Ramaze::Controller
         #'comment_author_email' => '',
         #'comment_author_url' => '',
       }
-      akismet_result = http.post( post_params )
+      akismet_result = Akismet.check_comment( comment_data, request )
       
       if akismet_result == 'true' 
         @error = "Your comment seems to be spam; it must be approved before becoming visible."
@@ -115,25 +115,10 @@ class TicketController < Ramaze::Controller
       }
       
       # Check against Akismet first
-      akismet_key = Configuration.get( 'akismet_key' )
-      http = SimpleHttp.new "#{akismet_key}.rest.akismet.com/1.1/comment-check"
-      http.request_headers[ 'User-Agent' ] = 'LinisTrac/0.1.0 | LinisTrac/0.1.0'
-      post_params = {
-        'blog' => 'http://linis.purepistos.net',
-        'user_ip' => request.env[ 'REMOTE_ADDR' ],
-        'user_agent' => request.env[ 'HTTP_USER_AGENT' ],
-        'referrer' => request.env[ 'HTTP_REFERER' ],
-        'comment_type' => 'ticket',
-        'comment_author' => @creator_name,
-        'comment_content' => ticket_data[ :description ],
-        'ticket_title' => ticket_data[ :title ],
-        'ticket_tags' => ticket_data[ :tags ],
-        # and all request.env
-        #'permalink' => '',
-        #'comment_author_email' => '',
-        #'comment_author_url' => '',
-      }
-      akismet_result = http.post( post_params )
+      akismet_result = Akismet.check_ticket(
+        ticket_data.merge( :author_name => @creator_name ),
+        request
+      )
       
       if akismet_result == 'true' 
         @error = "Your ticket seems to be spam; it must be approved before becoming visible."
