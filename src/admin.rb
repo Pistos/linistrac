@@ -57,6 +57,18 @@ class AdminController < Ramaze::Controller
     redirect Rs( :comment )
   end
   
+  def comment_reject( comment_id )
+    requires_flag 'admin'
+    c = Comment[ comment_id ]
+    if c
+      c.is_spam = true
+      flash[ :success ] = "Marked comment ##{comment_id} as spam."
+    else
+      flash[ :error ] = "Failed to mark comment ##{comment_id} as spam."
+    end
+    redirect Rs( :comment )
+  end
+  
   def comment_delete( comment_id )
     requires_flag 'admin'
     

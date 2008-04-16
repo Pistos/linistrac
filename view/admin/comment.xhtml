@@ -50,7 +50,16 @@
   
   <tr>
     <td><a href="/admin/comment_view/#{comment.id}">#{comment.id}</a></td>
-    <td><a href="/admin/comment_approve/#{comment.id}">Approve</a></td>
+    <td>
+      <?r if comment.is_spam ?>
+      <a href="/admin/comment_approve/#{comment.id}">Approve</a>
+      <?r end ?>
+    </td>
+    <td>
+      <?r if not comment.is_spam ?>
+      <a href="/admin/comment_reject/#{comment.id}">Spam</a>
+      <?r end ?>
+    </td>
     <td><a href="/admin/comment_delete/#{comment.id}">Delete</a></td>
     <td>#{comment.time_created_s}</td>
     <td><a href="/admin/comment_view/#{comment.id}">#{comment.text[ 0..70 ]}</a></td>
