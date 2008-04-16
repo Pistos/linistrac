@@ -49,11 +49,11 @@
   <?r @comments.each do |comment| ?>
   
   <tr>
-    <td>#{comment.id}</td>
+    <td><a href="/admin/comment_view/#{comment.id}">#{comment.id}</a></td>
     <td><a href="/admin/comment_approve/#{comment.id}">Approve</a></td>
     <td><a href="/admin/comment_delete/#{comment.id}">Delete</a></td>
     <td>#{comment.time_created_s}</td>
-    <td>#{comment.text[ 0..70 ]}</td>
+    <td><a href="/admin/comment_view/#{comment.id}">#{comment.text[ 0..70 ]}</a></td>
   </tr>
   
   <?r end ?>

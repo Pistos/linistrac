@@ -1,0 +1,17 @@
+<?r if @comment.is_spam ?>
+
+<div class="notice">
+This comment is considered spam.
+</div>
+
+<?r end ?>
+
+<h4>Comment on <a href="/ticket/view/#{@comment.ticket_id}#comment-#{@comment.id}">Ticket ##{@comment.ticket_id}</a></h4>
+    
+<div class="comment">
+  <span class="header">
+    <span class="author">#{@comment.author_name}</span> at
+    <span class="timestamp">#{@comment.time_created_s}</span>
+  </span>
+  <div class="text">#{@comment.text}</div>
+</div>

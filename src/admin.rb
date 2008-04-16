@@ -68,4 +68,8 @@ class AdminController < Ramaze::Controller
     end
     redirect Rs( :comment )
   end
+  
+  def comment_view( comment_id )
+    @comment = Comment[ comment_id.to_i ]
+  end
 end
