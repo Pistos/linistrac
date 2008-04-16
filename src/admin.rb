@@ -21,7 +21,9 @@ class AdminController < Ramaze::Controller
     @unmoderated_comments = Comment.s %{
       SELECT c.*
       FROM comments c
-      WHERE c.is_spam
+      WHERE
+        c.is_spam
+        AND c.time_moderated IS NULL
       ORDER BY c.id
     }
     @page = request[ 'page' ].to_i
@@ -49,7 +51,10 @@ class AdminController < Ramaze::Controller
     requires_flag 'admin'
     c = Comment[ comment_id ]
     if c
-      c.is_spam = false
+      c.set(
+        :is_spam => false,
+        :time_moderated => Time.now
+      )
       flash[ :success ] = "Approved comment ##{comment_id}."
     else
       flash[ :error ] = "Failed to approve comment ##{comment_id}."
@@ -61,7 +66,10 @@ class AdminController < Ramaze::Controller
     requires_flag 'admin'
     c = Comment[ comment_id ]
     if c
-      c.is_spam = true
+      c.set(
+        :is_spam => true,
+        :time_moderated => Time.now
+      )
       flash[ :success ] = "Marked comment ##{comment_id} as spam."
     else
       flash[ :error ] = "Failed to mark comment ##{comment_id} as spam."

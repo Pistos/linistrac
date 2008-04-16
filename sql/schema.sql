@@ -74,6 +74,7 @@ CREATE TABLE tickets (
     description VARCHAR( 8192 ) NOT NULL CONSTRAINT description_length CHECK ( LENGTH( description ) > 3 ),
     tags VARCHAR( 1024 ),
     is_spam BOOLEAN NOT NULL DEFAULT FALSE,
+    time_moderated TIMESTAMP,
     PRIMARY KEY( id )
 );
 
@@ -85,6 +86,7 @@ CREATE TABLE comments (
     author_name VARCHAR( 256 ),
     text VARCHAR( 8192 ) NOT NULL CONSTRAINT text_length CHECK ( LENGTH( text ) > 3 ),
     is_spam BOOLEAN NOT NULL DEFAULT FALSE,
+    time_moderated TIMESTAMP,
     CONSTRAINT has_author CHECK ( author_id IS NOT NULL OR author_name IS NOT NULL ),
     PRIMARY KEY( id )
 );
