@@ -70,6 +70,14 @@ class AdminController < Ramaze::Controller
         :is_spam => true,
         :time_moderated => Time.now
       )
+      akismet_result = Akismet.spam_comment(
+        {
+          :text => c.text,
+          :author_name => c.author_name,
+        },
+        request
+      )
+      Ramaze::Log.debug "comment_reject: #{akismet_result}"
       flash[ :success ] = "Marked comment ##{comment_id} as spam."
     else
       flash[ :error ] = "Failed to mark comment ##{comment_id} as spam."
