@@ -102,17 +102,46 @@ class TicketController < Ramaze::Controller
     
     if request.post?
       new_ticket = nil
+      
+      ticket_data = {
+        :severity_id => @severity.id,
+        :priority => @priority,
+        :creator_id => @user ? @user.id : nil,
+        :group_id => @group_id,
+        :status_id => @status.id,
+        :title => @title,
+        :description => @description,
+        :tags => @tags,
+      }
+      
+      # Check against Akismet first
+      akismet_key = Configuration.get( 'akismet_key' )
+      http = SimpleHttp.new "#{akismet_key}.rest.akismet.com/1.1/comment-check"
+      http.request_headers[ 'User-Agent' ] = 'LinisTrac/0.1.0 | LinisTrac/0.1.0'
+      post_params = {
+        'blog' => 'http://linis.purepistos.net',
+        'user_ip' => request.env[ 'REMOTE_ADDR' ],
+        'user_agent' => request.env[ 'HTTP_USER_AGENT' ],
+        'referrer' => request.env[ 'HTTP_REFERER' ],
+        'comment_type' => 'ticket',
+        'comment_author' => @creator_name,
+        'comment_content' => ticket_data[ :description ],
+        'ticket_title' => ticket_data[ :title ],
+        'ticket_tags' => ticket_data[ :tags ],
+        # and all request.env
+        #'permalink' => '',
+        #'comment_author_email' => '',
+        #'comment_author_url' => '',
+      }
+      akismet_result = http.post( post_params )
+      
+      if akismet_result == 'true' 
+        @error = "Your ticket seems to be spam; it must be approved before becoming visible."
+        ticket_data[ :in_moderation ] = true
+      end
+      
       begin
-        new_ticket = Ticket.create(
-          :severity_id => @severity.id,
-          :priority => @priority,
-          :creator_id => @user ? @user.id : nil,
-          :group_id => @group_id,
-          :status_id => @status.id,
-          :title => @title,
-          :description => @description,
-          :tags => @tags
-        )
+        new_ticket = Ticket.create( ticket_data )
       rescue DBI::Error => e
         case e.message
           when /title_length/
@@ -126,7 +155,9 @@ class TicketController < Ramaze::Controller
         end
       end
       if new_ticket
-        @success = "Created <a href='/ticket/view/#{new_ticket.id}'>ticket ##{new_ticket.id}</a>."
+        if @error.nil?
+          @success = "Created <a href='/ticket/view/#{new_ticket.id}'>ticket ##{new_ticket.id}</a>."
+        end
       elsif @error.nil?
         @error = "Failed to create new ticket."
       end
