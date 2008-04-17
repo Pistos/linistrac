@@ -156,7 +156,8 @@ class TicketController < Ramaze::Controller
       if new_ticket
         if @error.nil?
           TicketSnapshot.snapshoot( new_ticket, @user || User.one )
-          @success = "Created <a href='/ticket/view/#{new_ticket.id}'>ticket ##{new_ticket.id}</a>."
+          flash[ :success ] = "Created ticket."
+          redirect Rs( :view, new_ticket.id )
         end
       elsif @error.nil?
         @error = "Failed to create new ticket."
