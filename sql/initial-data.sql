@@ -59,6 +59,7 @@ INSERT INTO statuses ( name ) VALUES ( 'Acknowledged' );
 INSERT INTO statuses ( name ) VALUES ( 'Assigned' );
 INSERT INTO statuses ( name ) VALUES ( 'Closed' );
 
+INSERT INTO resolutions ( name ) VALUES ( 'Unresolved' );
 INSERT INTO resolutions ( name ) VALUES ( 'Fixed' );
 INSERT INTO resolutions ( name ) VALUES ( 'Invalid' );
 INSERT INTO resolutions ( name ) VALUES ( 'Dismissed' );
@@ -66,3 +67,7 @@ INSERT INTO resolutions ( name ) VALUES ( 'Duplicate' );
 INSERT INTO resolutions ( name ) VALUES ( 'Unreproducible' );
 
 INSERT INTO ticket_groups ( name, description ) VALUES ( 'Uncategorized', 'Uncategorized tickets.' );
+
+INSERT INTO configuration ( key, value ) VALUES ( 'akismet_key', '' );
+INSERT INTO configuration ( key, value ) VALUES ( 'initial_status', 'New' );
+INSERT INTO configuration ( key, value ) VALUES ( 'initial_resolution', 'Unresolved' );

@@ -10,6 +10,7 @@ require 'src/access'
 require 'src/models.rb'
 require 'src/akismet'
 require 'src/main'
+require 'src/ticket-delta'
 require 'src/ticket'
 require 'src/admin'
 

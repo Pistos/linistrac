@@ -27,22 +27,10 @@ class TicketController < Ramaze::Controller
     @user = session[ :user ]
     @resolutions = Resolution.all
     ss = TicketSnapshot.where( :ticket_id => @t.id ).sort_by { |s| s.time_snapshot }
-    @changes = []
+    @deltas = []
     ss.each_with_index do |s,i|
       next if i == 0
-      sprev = ss[ i - 1 ]
-      diff = sprev.diff( s )
-      @changes << {
-        :time => s.time_snapshot,
-        :changer => s.changer,
-        :delta => diff.map { |key|
-          {
-            :key => key,
-            :old => sprev[ key ],
-            :new => s[ key ],
-          }
-        },
-      }
+      @deltas << TicketDelta.new( ss[ i - 1 ], s )
     end
     
     if request.post?
@@ -91,7 +79,8 @@ class TicketController < Ramaze::Controller
   def create
     @severities = Severity.sort_by { |s| s.ordinal }
     @priorities = (MIN_PRIORITY..MAX_PRIORITY)
-    @status = Status.initial
+    @status = Status[ :name => Configuration.get( 'initial_status' ) ]
+    @resolution = Resolution[ :name => Configuration.get( 'initial_resolution' ) ]
     @groups = TicketGroup.all
     
     @description = c request[ 'description' ]
@@ -122,6 +111,7 @@ class TicketController < Ramaze::Controller
         :creator_id => @user ? @user.id : nil,
         :group_id => @group_id,
         :status_id => @status.id,
+        :resolution_id => @resolution.id,
         :title => @title,
         :description => @description,
         :tags => @tags,

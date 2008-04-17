@@ -69,7 +69,7 @@ CREATE TABLE tickets (
     creator_id INTEGER REFERENCES users( id ),
     group_id INTEGER NOT NULL REFERENCES ticket_groups( id ),
     status_id INTEGER NOT NULL REFERENCES statuses( id ),
-    resolution_id INTEGER REFERENCES resolutions( id ),
+    resolution_id INTEGER NOT NULL REFERENCES resolutions( id ),
     title VARCHAR( 256 ) NOT NULL CONSTRAINT title_length CHECK ( LENGTH( title ) > 3 ),
     description VARCHAR( 8192 ) NOT NULL CONSTRAINT description_length CHECK ( LENGTH( description ) > 3 ),
     tags VARCHAR( 1024 ),

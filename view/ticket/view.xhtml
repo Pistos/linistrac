@@ -36,7 +36,6 @@
     <td>Resolution:</td>
     <td>
       <select name="resolution_id">
-        <option value="" #{'selected' if @t.resolution_id.nil?}>Unresolved</option>
         <?r @resolutions.each do |r| ?>
           <option value="#{r.id}" title="#{r.description}" #{'selected' if @t.resolution_id == r.id}>#{r.name}</option>
         <?r end ?>
@@ -50,17 +49,17 @@
 
 <div>
 
-<?r @changes.each do |c| ?>
+<?r @deltas.each do |delta| ?>
 
   <div class="ticket-delta">
     <span class="header">
-      <span class="author">#{c[ :changer ]}</span>
-      <span class="timestamp">#{c[ :time ]}</span>
+      <span class="author">#{delta.changer}</span> at
+      <span class="timestamp">#{delta.time}</span>
     </span>
     <div class="text">
       <ul>
-      <?r c[ :delta ].each do |d| ?>
-        <li><b>#{d[:key]}</b> changed from #{d[:old]} to <b>#{d[:new]}</b></li>
+      <?r delta.changes.each do |c| ?>
+        <li><b>#{c[:key]}</b> changed from #{c[:old]} to <b>#{c[:new]}</b></li>
       <?r end ?>
       </ul>
     </div>
