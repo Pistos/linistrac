@@ -17,7 +17,23 @@ class Ticket < DBI::Model( :tickets )
     time_created.strftime "%Y-%m-%d %H:%M"
   end
   def time_updated_s
-    time_updated.strftime "%Y-%m-%d %H:%M"
+    t = $dbh.sc(
+      %{
+        SELECT MAX(t) FROM (
+          (
+            SELECT time_snapshot AS t
+            FROM ticket_snapshots ss 
+            WHERE ss.ticket_id = ?
+          ) UNION (
+            SELECT time_created AS t
+            FROM comments c
+            WHERE c.ticket_id = ?
+          )
+        ) AS x
+      },
+      id,
+      id
+    ).strftime "%Y-%m-%d %H:%M"
   end
   def group
     TicketGroup[ group_id ]
