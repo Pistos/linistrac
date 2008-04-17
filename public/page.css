@@ -47,7 +47,7 @@ div.error {
     font-weight: bold;
     background-color: #FFEEEE;
     padding: 1em;
-    margin: 1em;
+    margin: 1em 0px;
 }
 
 div.success {
@@ -56,8 +56,18 @@ div.success {
     font-weight: bold;
     background-color: #EEFFEE;
     padding: 1em;
-    margin: 1em;
+    margin: 1em 0px;
 }
+
+div.notice {
+    border: 1px solid #666600;
+    color: #666600;
+    font-weight: bold;
+    background-color: #FFFFEE;
+    padding: 1em;
+    margin: 1em 0px;
+}
+
 
 
 div.ticket {
