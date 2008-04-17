@@ -109,16 +109,21 @@ table.list tr.odd-row td {
     background-color: #EEEEEE;
 }
 
-div.comment {
+div.comment, div.ticket-delta {
     border-top: 1px solid #999999;
-    padding: 1em;
+    padding: 0px 1em 1em 0px;
 }
 
-div.comment .text {
+div.comment .text, div.ticket-delta .text {
     padding: 1em;
     white-space: pre-line;
 }
 
-div.comment .header {
+div.comment .header, div.ticket-delta .header {
     color: #666699;
+}
+
+div.ticket-delta ul {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
