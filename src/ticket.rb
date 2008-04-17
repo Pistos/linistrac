@@ -9,8 +9,8 @@ class TicketController < Ramaze::Controller
   end
   
   def list
-    @tickets = Ticket.all
     @user = session[ :user ]
+    @tickets = Ticket.where( :is_spam => false )
   end
   
   def view( ticket_id )
