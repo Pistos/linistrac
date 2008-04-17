@@ -33,10 +33,17 @@ class TicketController < Ramaze::Controller
       @deltas << TicketDelta.new( ss[ i - 1 ], s )
     end
     @deltas = @deltas.sort_by { |d| d.time }
+  end
+  
+  def comment_add( ticket_id )
+    ticket_id = ticket_id.to_i
+    @t = Ticket[ ticket_id ]
+    @user = session[ :user ]
     
-    if request.post?
-      # New comment
-      
+    if @t.nil?
+      flash[ :error ] = "No such ticket (##{ticket_id})."
+      redirect Rs( :list )
+    elsif request.post?
       comment_data = {
         :ticket_id => ticket_id,
         :text => request[ 'text' ]
@@ -74,6 +81,8 @@ class TicketController < Ramaze::Controller
             raise e
         end
       end
+    
+      redirect Rs( :view, ticket_id )
     end
   end
   
