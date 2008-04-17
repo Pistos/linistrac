@@ -31,22 +31,36 @@
 
 </div>
 
-<form method="POST" action="/ticket/update/#{@t.id}">
-  <table>
-  <tr>
-    <td>Resolution:</td>
-    <td>
-      <select name="resolution_id">
-        <?r @resolutions.each do |r| ?>
-          <option value="#{r.id}" title="#{r.description}" #{'selected' if @t.resolution_id == r.id}>#{r.name}</option>
-        <?r end ?>
-      </select>
-    </td>
-  </tr>
-  </table>
-  
-  <input type="submit" value="Update"/>
-</form>
+<?r if logged_in? ?>
+  <form method="POST" action="/ticket/update/#{@t.id}">
+    <table>
+    <tr>
+      <td>Resolution:</td>
+      <td>
+        <select name="resolution_id">
+          <?r @resolutions.each do |r| ?>
+            <option value="#{r.id}" title="#{r.description}" #{'selected' if @t.resolution_id == r.id}>#{r.name}</option>
+          <?r end ?>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Status:</td>
+      <td>
+        <select name="status_id">
+          <?r @statuses.each do |s| ?>
+            <option value="#{s.id}" title="#{s.description}" #{'selected' if @t.status_id == s.id}>#{s.name}</option>
+          <?r end ?>
+        </select>
+      </td>
+    </tr>
+    </table>
+    
+    <input type="submit" value="Update"/>
+  </form>
+<?r else ?>
+  <p>(<a href="/auth/login">Login</a> to update this ticket)</p>
+<?r end ?>
 
 <div class="changelog">
 

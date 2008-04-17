@@ -12,6 +12,18 @@ class TicketDelta
             :old => Resolution[ ss1[ key ].to_i ],
             :new => Resolution[ ss2[ key ].to_i ],
           }
+        when 'status_id'
+          {
+            :key => 'Status',
+            :old => Status[ ss1[ key ].to_i ],
+            :new => Status[ ss2[ key ].to_i ],
+          }
+        else
+          {
+            :key => key,
+            :old => ss1[ key ],
+            :new => ss2[ key ],
+          }
       end
     }
   end

@@ -26,6 +26,7 @@ class TicketController < Ramaze::Controller
     
     @user = session[ :user ]
     @resolutions = Resolution.all
+    @statuses = Status.all
     ss = TicketSnapshot.where( :ticket_id => @t.id ).sort_by { |s| s.time_snapshot }
     @deltas = @t.comments.elements
     ss.each_with_index do |s,i|
@@ -175,8 +176,10 @@ class TicketController < Ramaze::Controller
       if t
         old_ticket = t.to_h
         resolution = Resolution[ request[ 'resolution_id' ].to_i ]
+        status = Status[ request[ 'status_id' ].to_i ]
         t.set(
-          :resolution_id => resolution ? resolution.id : nil
+          :resolution_id => resolution ? resolution.id : nil,
+          :status_id => status ? status.id : nil
         )
         new_ticket = t.to_h
         # TODO: Spam check again?  NULL time_moderated?

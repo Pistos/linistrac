@@ -33,7 +33,12 @@ class Ticket < DBI::Model( :tickets )
       },
       id,
       id
-    ).strftime "%Y-%m-%d %H:%M"
+    )
+    if t
+      t.strftime "%Y-%m-%d %H:%M"
+    else
+      "Never"
+    end
   end
   def group
     TicketGroup[ group_id ]
