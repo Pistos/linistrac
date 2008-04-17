@@ -13,6 +13,85 @@ class AdminController < Ramaze::Controller
   def ticket
     requires_flag 'admin'
     @user = session[ :user ]
+    
+    @unmoderated_tickets = Ticket.s %{
+      SELECT t.*
+      FROM tickets t
+      WHERE
+        t.is_spam
+        AND t.time_moderated IS NULL
+      ORDER BY t.id
+    }
+    @page = request[ 'page' ].to_i
+    if @page < 0
+      @page = 0
+    end
+    @page_size = request[ 'page-size' ].to_i
+    if @page_size < 1
+      @page_size = 10
+    end
+    @tickets = Ticket.s(
+      %{
+        SELECT t.*
+        FROM tickets t
+        ORDER BY t.id DESC
+        OFFSET ?
+        LIMIT ?
+      },
+      @page * @page_size,
+      @page_size
+    )
+  end
+  
+  def ticket_approve( ticket_id )
+    requires_flag 'admin'
+    t = Ticket[ ticket_id ]
+    if t
+      t.set(
+        :is_spam => false,
+        :time_moderated => Time.now
+      )
+      flash[ :success ] = "Approved ticket ##{ticket_id}."
+    else
+      flash[ :error ] = "Failed to approve ticket ##{ticket_id}."
+    end
+    redirect Rs( :ticket )
+  end
+  
+  def ticket_reject( ticket_id )
+    requires_flag 'admin'
+    t = Ticket[ ticket_id ]
+    if t
+      t.set(
+        :is_spam => true,
+        :time_moderated => Time.now
+      )
+      akismet_result = Akismet.spam_ticket(
+        {
+          :description => t.description,
+          :author_name => t.creator_name,
+          :title => t.title,
+          :tags => t.tags,
+        },
+        request
+      )
+      flash[ :success ] = "Marked ticket ##{ticket_id} as spam."
+    else
+      flash[ :error ] = "Failed to mark ticket ##{ticket_id} as spam."
+    end
+    redirect Rs( :ticket )
+  end
+  
+  def ticket_delete( ticket_id )
+    requires_flag 'admin'
+    
+    t = Ticket[ ticket_id ]
+    if t and t.delete
+      flash[ :success ] = "Deleted ticket ##{ticket_id}."
+    else
+      flash[ :error ] = "Failed to delete ticket ##{ticket_id}."
+    end
+    redirect Rs( :ticket )
   end
   
   def comment
@@ -77,7 +156,6 @@ class AdminController < Ramaze::Controller
         },
         request
       )
-      Ramaze::Log.debug "comment_reject: #{akismet_result}"
       flash[ :success ] = "Marked comment ##{comment_id} as spam."
     else
       flash[ :error ] = "Failed to mark comment ##{comment_id} as spam."

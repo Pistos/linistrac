@@ -1,0 +1,82 @@
+<h3>Tickets Needing Moderation</h3>
+
+<?r if @unmoderated_tickets.empty? ?>
+
+  <p>No tickets need moderation.</p>
+
+<?r else ?>
+
+  <table class="list">
+
+  <tr>
+    <th>ID</th>
+    <th colspan="2">Actions</th>
+    <th>Time</th>
+    <th>Description</th>
+  </tr>
+  
+  <?r @unmoderated_tickets.each do |ticket| ?>
+  
+  <tr>
+    <td><a href="/admin/ticket_view/#{ticket.id}">#{ticket.id}</a></td>
+    <td><a href="/admin/ticket_approve/#{ticket.id}">Approve</a></td>
+    <td><a href="/admin/ticket_delete/#{ticket.id}">Delete</a></td>
+    <td>#{ticket.time_created_s}</td>
+    <td><a href="/ticket/view/#{ticket.id}">#{ticket.description[ 0..70 ]}</a></td>
+  </tr>
+  
+  <?r end ?>
+  
+  </table>
+
+<?r end ?>
+
+<h3>All Tickets</h3>
+
+<div>
+<a href="?page=#{@page+1}">Earlier</a>
+<?r if @page > 0 ?>
+  <a href="?page=#{@page-1}">Later</a>
+<?r end ?>
+</div>
+  
+<?r if @tickets.empty? ?>
+
+  <p>No tickets.</p>
+  
+<?r else ?>
+
+  <table class="list">
+  
+  <tr>
+    <th>ID</th>
+    <th colspan="3">Actions</th>
+    <th>Time</th>
+    <th>Description</th>
+  </tr>
+  
+  <?r @tickets.each do |ticket| ?>
+  
+  <tr>
+    <td><a href="/ticket/view/#{ticket.id}">#{ticket.id}</a></td>
+    <td>
+      <?r if ticket.is_spam ?>
+      <a href="/admin/ticket_approve/#{ticket.id}">Approve</a>
+      <?r end ?>
+    </td>
+    <td>
+      <?r if not ticket.is_spam ?>
+      <a href="/admin/ticket_reject/#{ticket.id}">Spam</a>
+      <?r end ?>
+    </td>
+    <td><a href="/admin/ticket_delete/#{ticket.id}">Delete</a></td>
+    <td>#{ticket.time_created_s}</td>
+    <td><a href="/ticket/view/#{ticket.id}">#{ticket.description[ 0..70 ]}</a></td>
+  </tr>
+  
+  <?r end ?>
+  
+  </table>
+  
+<?r end ?>
+
