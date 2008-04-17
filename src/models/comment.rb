@@ -8,4 +8,8 @@ class Comment < DBI::Model( :comments )
   def time_created_s
     time_created.strftime "%Y-%m-%d %H:%M"
   end
+  
+  def time
+    time_created
+  end
 end

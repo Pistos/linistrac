@@ -47,33 +47,28 @@
   <input type="submit" value="Update"/>
 </form>
 
-<div>
+<div class="changelog">
 
-<?r @deltas.each do |delta| ?>
+  <h3>Change Log</h3>
 
-  <div class="ticket-delta">
-    <span class="header">
-      <span class="author">#{delta.changer}</span> at
-      <span class="timestamp">#{delta.time}</span>
-    </span>
-    <div class="text">
-      <ul>
-      <?r delta.changes.each do |c| ?>
-        <li><b>#{c[:key]}</b> changed from #{c[:old]} to <b>#{c[:new]}</b></li>
-      <?r end ?>
-      </ul>
+<?r @deltas.each do |delta|
+  if TicketDelta === delta
+    ?>
+    <div class="ticket-delta">
+      <span class="header">
+        <span class="author">#{delta.changer}</span> at
+        <span class="timestamp">#{delta.time_s}</span>
+      </span>
+      <div class="text">
+        <ul>
+        <?r delta.changes.each do |c| ?>
+          <li><b>#{c[:key]}</b> changed from #{c[:old]} to <b>#{c[:new]}</b></li>
+        <?r end ?>
+        </ul>
+      </div>
     </div>
-  </div>
-
-<?r end ?>
-
-</div>
-
-<div class="comments">
-
-  <h3>Comments</h3>
-
-  <?r @t.comments.each do |comment|
+  <?r elsif Comment === delta
+    comment = delta
     next if comment.is_spam
     ?>
     <div class="comment">
@@ -84,7 +79,10 @@
       </span>
       <div class="text">#{comment.text}</div>
     </div>
+    
   <?r end ?>
+
+<?r end ?>
 
 </div>
 

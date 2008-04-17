@@ -1,5 +1,5 @@
 class TicketDelta
-  attr_reader :changer, :changes
+  attr_reader :time, :changer, :changes
   
   def initialize( ss1, ss2 )
     @time = ss2.time_snapshot
@@ -16,7 +16,7 @@ class TicketDelta
     }
   end
   
-  def time( format = '%Y-%m-%d %H:%M:%S' )
+  def time_s( format = '%Y-%m-%d %H:%M' )
     @time.strftime format
   end
 end

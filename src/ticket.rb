@@ -27,11 +27,12 @@ class TicketController < Ramaze::Controller
     @user = session[ :user ]
     @resolutions = Resolution.all
     ss = TicketSnapshot.where( :ticket_id => @t.id ).sort_by { |s| s.time_snapshot }
-    @deltas = []
+    @deltas = @t.comments.elements
     ss.each_with_index do |s,i|
       next if i == 0
       @deltas << TicketDelta.new( ss[ i - 1 ], s )
     end
+    @deltas = @deltas.sort_by { |d| d.time }
     
     if request.post?
       # New comment
