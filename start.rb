@@ -4,6 +4,7 @@ require 'ramaze/spec/helper/simple_http'
 
 require 'src/linis-trac'
 
+require 'src/hash'
 require 'src/auth'
 require 'src/access'
 require 'src/models.rb'

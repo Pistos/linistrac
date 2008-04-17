@@ -2,6 +2,8 @@ class TicketController < Ramaze::Controller
   map '/ticket'
   layout '/page'
   
+  include AuthAC
+  
   MIN_PRIORITY = 1
   MAX_PRIORITY = 3
   
@@ -16,7 +18,32 @@ class TicketController < Ramaze::Controller
   def view( ticket_id )
     ticket_id = ticket_id.to_i
     @t = Ticket[ ticket_id ]
+    
+    if @t.nil?
+      @error = "No such ticket (##{ticket_id})."
+      return
+    end
+    
     @user = session[ :user ]
+    @resolutions = Resolution.all
+    ss = TicketSnapshot.where( :ticket_id => @t.id ).sort_by { |s| s.time_snapshot }
+    @changes = []
+    ss.each_with_index do |s,i|
+      next if i == 0
+      sprev = ss[ i - 1 ]
+      diff = sprev.diff( s )
+      @changes << {
+        :time => s.time_snapshot,
+        :changer => s.changer,
+        :delta => diff.map { |key|
+          {
+            :key => key,
+            :old => sprev[ key ],
+            :new => s[ key ],
+          }
+        },
+      }
+    end
     
     if request.post?
       # New comment
@@ -127,6 +154,7 @@ class TicketController < Ramaze::Controller
       end
       if new_ticket
         if @error.nil?
+          TicketSnapshot.snapshoot( new_ticket, @user || User.one )
           @success = "Created <a href='/ticket/view/#{new_ticket.id}'>ticket ##{new_ticket.id}</a>."
         end
       elsif @error.nil?
@@ -136,5 +164,31 @@ class TicketController < Ramaze::Controller
   end
   
   def delete
+  end
+  
+  def update( ticket_id )
+    require_login
+    
+    if request.post?
+      ticket_id = ticket_id.to_i
+      t = Ticket[ ticket_id ]
+      if t
+        old_ticket = t.to_h
+        resolution = Resolution[ request[ 'resolution_id' ].to_i ]
+        t.set(
+          :resolution_id => resolution ? resolution.id : nil
+        )
+        new_ticket = t.to_h
+        # TODO: Spam check again?  NULL time_moderated?
+        if not old_ticket.diff( new_ticket ).empty?
+          snapshot = TicketSnapshot.snapshoot( t, session[ :user ] )
+          flash[ :success ] = "Ticket ##{t.id} updated."
+        else
+          flash[ :notice ] = "Ticket ##{t.id} not modified."
+        end
+      end
+    end
+    
+    redirect Rs( :view, ticket_id )
   end
 end

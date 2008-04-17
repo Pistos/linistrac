@@ -30,6 +30,46 @@
 
 </div>
 
+<form method="POST" action="/ticket/update/#{@t.id}">
+  <table>
+  <tr>
+    <td>Resolution:</td>
+    <td>
+      <select name="resolution_id">
+        <option value="" #{'selected' if @t.resolution_id.nil?}>Unresolved</option>
+        <?r @resolutions.each do |r| ?>
+          <option value="#{r.id}" title="#{r.description}" #{'selected' if @t.resolution_id == r.id}>#{r.name}</option>
+        <?r end ?>
+      </select>
+    </td>
+  </tr>
+  </table>
+  
+  <input type="submit" value="Update"/>
+</form>
+
+<div>
+
+<?r @changes.each do |c| ?>
+
+  <div class="ticket-delta">
+    <span class="header">
+      <span class="author">#{c[ :changer ]}</span>
+      <span class="timestamp">#{c[ :time ]}</span>
+    </span>
+    <div class="text">
+      <ul>
+      <?r c[ :delta ].each do |d| ?>
+        <li><b>#{d[:key]}</b> changed from #{d[:old]} to <b>#{d[:new]}</b></li>
+      <?r end ?>
+      </ul>
+    </div>
+  </div>
+
+<?r end ?>
+
+</div>
+
 <div class="comments">
 
   <h3>Comments</h3>
@@ -65,3 +105,4 @@
   </table>
   <input type="submit" value="Add Comment"/>
 </form>
+

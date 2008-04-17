@@ -77,6 +77,27 @@ CREATE TABLE tickets (
     time_moderated TIMESTAMP,
     PRIMARY KEY( id )
 );
+CREATE TABLE ticket_snapshots (
+    id SERIAL,
+    ticket_id INTEGER NOT NULL REFERENCES tickets( id ),
+    time_snapshot TIMESTAMP NOT NULL DEFAULT NOW(),
+    changer_id INTEGER NOT NULL REFERENCES users( id ),
+    
+    time_created TIMESTAMP NOT NULL, -- DEFAULT NOW(),
+    time_updated TIMESTAMP NOT NULL, -- DEFAULT NOW(),
+    severity_id INTEGER, -- REFERENCES severities( id ),
+    priority INTEGER NOT NULL, -- DEFAULT 0,
+    creator_id INTEGER, -- REFERENCES users( id ),
+    group_id INTEGER NOT NULL, -- REFERENCES ticket_groups( id ),
+    status_id INTEGER NOT NULL, -- REFERENCES statuses( id ),
+    resolution_id INTEGER, -- REFERENCES resolutions( id ),
+    title VARCHAR( 256 ) NOT NULL, -- CONSTRAINT title_length CHECK ( LENGTH( title ) > 3 ),
+    description VARCHAR( 8192 ) NOT NULL, -- CONSTRAINT description_length CHECK ( LENGTH( description ) > 3 ),
+    tags VARCHAR( 1024 ),
+    is_spam BOOLEAN NOT NULL, -- DEFAULT FALSE,
+    time_moderated TIMESTAMP,
+    PRIMARY KEY( id )
+);
 
 CREATE TABLE comments (
     id SERIAL,
@@ -88,15 +109,6 @@ CREATE TABLE comments (
     is_spam BOOLEAN NOT NULL DEFAULT FALSE,
     time_moderated TIMESTAMP,
     CONSTRAINT has_author CHECK ( author_id IS NOT NULL OR author_name IS NOT NULL ),
-    PRIMARY KEY( id )
-);
-
-CREATE TABLE ticket_changes (
-    id SERIAL,
-    ticket_id INTEGER NOT NULL REFERENCES tickets( id ),
-    changee VARCHAR( 256 ) NOT NULL,
-    time_changed TIMESTAMP NOT NULL DEFAULT NOW(),
-    changer_id INTEGER NOT NULL REFERENCES users( id ),
     PRIMARY KEY( id )
 );
 
