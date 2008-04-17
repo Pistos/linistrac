@@ -37,9 +37,9 @@
   </div>
   <?r end ?>
   
-  <?r if @notice ?>
+  <?r if @notice or flash[ :notice ] ?>
   <div class="notice">
-    #{@notice}
+    #{@notice || flash[ :notice ]}
   </div>
   <?r end ?>
   
