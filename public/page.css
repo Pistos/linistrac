@@ -124,6 +124,6 @@ div.comment .header, div.ticket-delta .header {
 }
 
 div.ticket-delta ul {
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin: 0px;
+    padding: 0px 0px 0px 1em;
 }
