@@ -6,3 +6,26 @@
 <li><a href="/admin/comment">Comments</a></li>
 
 </ul>
+
+<div id="admin-config">
+
+<form method="POST">
+
+  <table>
+    <tr>
+      <td>Akismet Key:</td>
+      <td><input type="text" name="akismet_key" value="#{@conf['akismet_key']}"/></td>
+    </tr>
+    <tr>
+      <td>Initial Ticket Status:</td>
+      <td><input type="text" name="initial_status" value="#{@conf['initial_status']}"/></td>
+    </tr>
+    <tr>
+      <td>Initial Ticket Resolution:</td>
+      <td><input type="text" name="initial_resolution" value="#{@conf['initial_resolution']}"/></td>
+    </tr>
+  </table>
+
+</form>
+
+</div>
