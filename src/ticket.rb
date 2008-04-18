@@ -9,11 +9,17 @@ class TicketController < Ramaze::Controller
   MAX_PRIORITY = 3
   
   def index
+    redirect Rs( :list )
   end
   
   def list
     @user = session[ :user ]
-    @tickets = Ticket.where( :is_spam => false )
+    @tickets = Ticket.s %{
+      SELECT *
+      FROM tickets
+      WHERE is_spam = FALSE
+      ORDER BY id
+    }
   end
   
   def view( ticket_id )
