@@ -1,2 +1,42 @@
-Demo running at http://linis.purepistos.net .
+== LinisTrac
+
+LinisTrac is a clean and simple issue tracker, built from the start to be
+highly spam-resistant.  Linis is a Tagalog word that means "clean".
+
+A demo is running at http://linis.purepistos.net .
 Come chat about LinisTrac and get help in irc.freenode.net #ramaze or #mathetes.
+
+=== Requirements
+
+- Ramaze: gem install ramaze
+- DBI: http://ruby-dbi.rubyforge.org
+- M4DBI: gem install m4dbi
+- PostgreSQL
+
+=== Installation
+
+  git clone git://github.com/Pistos/linistrac.git
+  # As a user with sufficient PostgreSQL permissions:
+  createuser linis
+  createdb -O linis linis-trac
+  cd linistrac
+  cat sql/schema.sql | psql -U linis linis-trac
+  cat sql/initial-data.sql | psql -U linis linis-trac
+  
+=== Usage
+  
+  cd linistrac
+  ruby start.rb
+  
+Browse to http://localhost:8004
+Login with username 'admin', password 'admin'.
+Go to Admin section and add your Akismet API key (optional, but strongly recommended).
+
+=== Notes
+
+MySQL support is potentially forthcoming.
+
+=== Feedback and Support
+
+On IRC: irc.freenode.net ##mathetes or ##ramaze .
+Use http://mibbit.com if you don't have an IRC client.
