@@ -6,6 +6,12 @@ class TicketDelta
     @changer = ss2.changer
     @changes = ss1.diff( ss2 ).map { |key|
       case key
+        when 'group_id'
+          {
+            :key => 'Group',
+            :old => Group[ ss1[ key ].to_i ],
+            :new => Group[ ss2[ key ].to_i ],
+          }
         when 'resolution_id'
           {
             :key => 'Resolution',

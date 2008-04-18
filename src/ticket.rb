@@ -29,6 +29,7 @@ class TicketController < Ramaze::Controller
     @statuses = Status.all
     @priorities = (MIN_PRIORITY..MAX_PRIORITY).to_a
     @severities = Severity.all_sorted
+    @groups = TicketGroup.all
     
     ss = TicketSnapshot.where( :ticket_id => @t.id ).sort_by { |s| s.time_snapshot }
     @deltas = @t.comments.elements
@@ -100,7 +101,7 @@ class TicketController < Ramaze::Controller
     @description = c request[ 'description' ]
     @title = c request[ 'title' ]
     @tags = c request[ 'tags' ]
-    @group_id = request[ 'group_id' ] ? request[ 'group_id' ].to_i : nil
+    @group = request[ 'group_id' ] ? Group[ request[ 'group_id' ].to_i ] : Group.default
     @severity = request[ 'severity_id' ] ? Severity[ request[ 'severity_id' ].to_i ] : Severity.default
     @priority = normalized_priority( request[ 'priority' ] ? request[ 'priority' ].to_i : 2 )
     
@@ -118,7 +119,7 @@ class TicketController < Ramaze::Controller
         :severity_id => @severity.id,
         :priority => @priority,
         :creator_id => @user ? @user.id : nil,
-        :group_id => @group_id,
+        :group_id => @group.id,
         :status_id => @status.id,
         :resolution_id => @resolution.id,
         :title => @title,
@@ -178,13 +179,17 @@ class TicketController < Ramaze::Controller
         status = Status[ request[ 'status_id' ].to_i ]
         priority = normalized_priority( request[ 'priority' ].to_i )
         severity = Severity[ request[ 'severity_id' ].to_i ]
+        group = TicketGroup[ request[ 'group_id' ].to_i ]
         
-        t.set(
+        update_hash = {
           :resolution_id => ( resolution.id if resolution ),
           :status_id => ( status.id if status ),
           :priority => priority,
-          :severity_id => ( severity.id if severity )
-        )
+          :severity_id => ( severity.id if severity ),
+          :group_id => ( group.id if group )
+        }.delete_if { |k,v| v.nil? }
+        
+        t.set update_hash
         new_ticket = t.to_h
         # TODO: Spam check again?  NULL time_moderated?
         if not old_ticket.diff( new_ticket ).empty?
