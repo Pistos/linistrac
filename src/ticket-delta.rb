@@ -30,6 +30,12 @@ class TicketDelta
             :old => Severity[ ss1[ key ].to_i ],
             :new => Severity[ ss2[ key ].to_i ],
           }
+        when 'title', 'tags'
+          {
+            :key => key[ 0..0 ].upcase + key[ 1..-1 ],
+            :old => '"' + ss1[ key ] + '"',
+            :new => '"' + ss2[ key ] + '"',
+          }
         else
           {
             :key => key,
