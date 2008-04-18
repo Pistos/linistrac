@@ -69,5 +69,11 @@ INSERT INTO resolutions ( name ) VALUES ( 'Unreproducible' );
 INSERT INTO ticket_groups ( name, description ) VALUES ( 'Uncategorized', 'Uncategorized tickets.' );
 
 INSERT INTO configuration ( key, value ) VALUES ( 'akismet_key', '' );
-INSERT INTO configuration ( key, value ) VALUES ( 'initial_status', 'New' );
-INSERT INTO configuration ( key, value ) VALUES ( 'initial_resolution', 'Unresolved' );
+INSERT INTO configuration ( key, value ) VALUES (
+    'initial_status_id',
+    ( SELECT id FROM statuses WHERE name = 'New' )
+);
+INSERT INTO configuration ( key, value ) VALUES (
+    'initial_resolution_id',
+    ( SELECT id FROM resolutions WHERE name = 'Unresolved' )
+);

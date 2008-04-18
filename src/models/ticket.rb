@@ -49,4 +49,16 @@ class Ticket < DBI::Model( :tickets )
   def resolution
     Resolution[ resolution_id ]
   end
+  
+  def self.selector( set, fk, selected_id )
+    s = %{
+      <select name="#{fk}">
+    }
+    set.each do |item|
+      s << "<option value='#{item.id}' #{'selected' if selected_id == item.id}>#{item.name}</option>"
+    end
+    s << %{
+      </select>
+    }
+  end
 end

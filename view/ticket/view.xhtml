@@ -36,9 +36,9 @@
     <table>
     <tr>
       <td>Status:</td>
-      <td>#{ selector( @statuses, 'status_id', @t.status_id ) }</td>
+      <td>#{ Ticket.selector( @statuses, 'status_id', @t.status_id ) }</td>
       <td>Resolution:</td>
-      <td>#{ selector( @resolutions, 'resolution_id', @t.resolution_id ) }</td>
+      <td>#{ Ticket.selector( @resolutions, 'resolution_id', @t.resolution_id ) }</td>
     </tr>
     <tr>
       <td>Priority:</td>
@@ -50,11 +50,11 @@
         </select>
       </td>
       <td>Severity:</td>
-      <td>#{ selector( @severities, 'severity_id', @t.severity_id ) }</td>
+      <td>#{ Ticket.selector( @severities, 'severity_id', @t.severity_id ) }</td>
     </tr>
     <tr>
       <td>Group:</td>
-      <td>#{ selector( @groups, 'group_id', @t.group_id ) }</td>
+      <td>#{ Ticket.selector( @groups, 'group_id', @t.group_id ) }</td>
       <td></td>
       <td></td>
     </tr>

@@ -18,13 +18,15 @@
     </tr>
     <tr>
       <td>Initial Ticket Status:</td>
-      <td><input type="text" name="initial_status" value="#{@conf['initial_status']}"/></td>
+      <td>#{ Ticket.selector( @statuses, 'initial_status_id', @conf['initial_status_id'].to_i ) }</td>
     </tr>
     <tr>
       <td>Initial Ticket Resolution:</td>
-      <td><input type="text" name="initial_resolution" value="#{@conf['initial_resolution']}"/></td>
+      <td>#{ Ticket.selector( @resolutions, 'initial_resolution_id', @conf['initial_resolution_id'].to_i ) }</td>
     </tr>
   </table>
+  
+  <input type="submit" value="Update"/>
 
 </form>
 

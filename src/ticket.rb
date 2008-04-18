@@ -95,14 +95,14 @@ class TicketController < Ramaze::Controller
   def create
     @severities = Severity.sort_by { |s| s.ordinal }
     @priorities = (MIN_PRIORITY..MAX_PRIORITY)
-    @status = Status[ :name => Configuration.get( 'initial_status' ) ]
-    @resolution = Resolution[ :name => Configuration.get( 'initial_resolution' ) ]
+    @status = Status[ Configuration.get( 'initial_status_id' ) ]
+    @resolution = Resolution[ Configuration.get( 'initial_resolution_id' ) ]
     @groups = TicketGroup.all
     
     @description = c request[ 'description' ]
     @title = c request[ 'title' ]
     @tags = c request[ 'tags' ]
-    @group = request[ 'group_id' ] ? Group[ request[ 'group_id' ].to_i ] : Group.default
+    @group = request[ 'group_id' ] ? TicketGroup[ request[ 'group_id' ].to_i ] : TicketGroup.default
     @severity = request[ 'severity_id' ] ? Severity[ request[ 'severity_id' ].to_i ] : Severity.default
     @priority = normalized_priority( request[ 'priority' ] ? request[ 'priority' ].to_i : 2 )
     
@@ -208,18 +208,6 @@ class TicketController < Ramaze::Controller
   end
   
   private
-  
-  def selector( set, fk, selected_id )
-    s = %{
-      <select name="#{fk}">
-    }
-    set.each do |item|
-      s << "<option value='#{item.id}' #{'selected' if selected_id == item.id}>#{item.name}</option>"
-    end
-    s << %{
-      </select>
-    }
-  end
   
   def normalized_priority( priority )
     if priority < MIN_PRIORITY

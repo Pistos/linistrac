@@ -8,12 +8,21 @@ class AdminController < Ramaze::Controller
     requires_flag 'admin'
     
     @user = session[ :user ]
+    
+    if request.post?
+      Configuration.each do |c|
+        Configuration[ :key => c.key ].value = request[ c.key ]
+      end
+      @success = 'Settings updated.'
+    end
+    
     @conf = {}
     Configuration.each do |c|
       @conf[ c.key ] = c.value
     end
     @resolutions = Resolution.all
     @statuses = Status.all
+    
   end
   
   def ticket
