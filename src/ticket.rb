@@ -3,6 +3,7 @@ class TicketController < Ramaze::Controller
   layout '/page'
   
   include AuthAC
+  helper :partial
   
   MIN_PRIORITY = 1
   MAX_PRIORITY = 3
@@ -207,6 +208,18 @@ class TicketController < Ramaze::Controller
   end
   
   private
+  
+  def selector( set, fk, selected_id )
+    s = %{
+      <select name="#{fk}">
+    }
+    set.each do |item|
+      s << "<option value='#{item.id}' #{'selected' if selected_id == item.id}>#{item.name}</option>"
+    end
+    s << %{
+      </select>
+    }
+  end
   
   def normalized_priority( priority )
     if priority < MIN_PRIORITY

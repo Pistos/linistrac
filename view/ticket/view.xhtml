@@ -36,21 +36,9 @@
     <table>
     <tr>
       <td>Status:</td>
-      <td>
-        <select name="status_id">
-          <?r @statuses.each do |s| ?>
-            <option value="#{s.id}" title="#{s.description}" #{'selected' if @t.status_id == s.id}>#{s.name}</option>
-          <?r end ?>
-        </select>
-      </td>
+      <td>#{ selector( @statuses, 'status_id', @t.status_id ) }</td>
       <td>Resolution:</td>
-      <td>
-        <select name="resolution_id">
-          <?r @resolutions.each do |r| ?>
-            <option value="#{r.id}" title="#{r.description}" #{'selected' if @t.resolution_id == r.id}>#{r.name}</option>
-          <?r end ?>
-        </select>
-      </td>
+      <td>#{ selector( @resolutions, 'resolution_id', @t.resolution_id ) }</td>
     </tr>
     <tr>
       <td>Priority:</td>
@@ -62,23 +50,11 @@
         </select>
       </td>
       <td>Severity:</td>
-      <td>
-        <select name="severity_id">
-          <?r @severities.each do |s| ?>
-            <option value="#{s.id}" #{'selected' if @t.severity_id == s.id}>#{s.name}</option>
-          <?r end ?>
-        </select>
-      </td>
+      <td>#{ selector( @severities, 'severity_id', @t.severity_id ) }</td>
     </tr>
     <tr>
       <td>Group:</td>
-      <td>
-        <select name="group_id">
-          <?r @groups.each do |g| ?>
-            <option value="#{g.id}" title="#{g.description}" #{'selected' if @t.group_id == g.id}>#{g.name}</option>
-          <?r end ?>
-        </select>
-      </td>
+      <td>#{ selector( @groups, 'group_id', @t.group_id ) }</td>
       <td></td>
       <td></td>
     </tr>
