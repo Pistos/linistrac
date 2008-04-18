@@ -18,6 +18,12 @@ class TicketDelta
             :old => Status[ ss1[ key ].to_i ],
             :new => Status[ ss2[ key ].to_i ],
           }
+        when 'severity_id'
+          {
+            :key => 'Severity',
+            :old => Severity[ ss1[ key ].to_i ],
+            :new => Severity[ ss2[ key ].to_i ],
+          }
         else
           {
             :key => key,

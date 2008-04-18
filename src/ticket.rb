@@ -27,6 +27,9 @@ class TicketController < Ramaze::Controller
     @user = session[ :user ]
     @resolutions = Resolution.all
     @statuses = Status.all
+    @priorities = (MIN_PRIORITY..MAX_PRIORITY).to_a
+    @severities = Severity.all_sorted
+    
     ss = TicketSnapshot.where( :ticket_id => @t.id ).sort_by { |s| s.time_snapshot }
     @deltas = @t.comments.elements
     ss.each_with_index do |s,i|
@@ -99,12 +102,7 @@ class TicketController < Ramaze::Controller
     @tags = c request[ 'tags' ]
     @group_id = request[ 'group_id' ] ? request[ 'group_id' ].to_i : nil
     @severity = request[ 'severity_id' ] ? Severity[ request[ 'severity_id' ].to_i ] : Severity.default
-    @priority = request[ 'priority' ] ? request[ 'priority' ].to_i : 2
-    if @priority < MIN_PRIORITY
-      @priority = MIN_PRIORITY
-    elsif @priority > MAX_PRIORITY
-      @priority = MAX_PRIORITY
-    end
+    @priority = normalized_priority( request[ 'priority' ] ? request[ 'priority' ].to_i : 2 )
     
     @user = session[ :user ]
     if @user
@@ -178,9 +176,14 @@ class TicketController < Ramaze::Controller
         old_ticket = t.to_h
         resolution = Resolution[ request[ 'resolution_id' ].to_i ]
         status = Status[ request[ 'status_id' ].to_i ]
+        priority = normalized_priority( request[ 'priority' ].to_i )
+        severity = Severity[ request[ 'severity_id' ].to_i ]
+        
         t.set(
-          :resolution_id => resolution ? resolution.id : nil,
-          :status_id => status ? status.id : nil
+          :resolution_id => ( resolution.id if resolution ),
+          :status_id => ( status.id if status ),
+          :priority => priority,
+          :severity_id => ( severity.id if severity )
         )
         new_ticket = t.to_h
         # TODO: Spam check again?  NULL time_moderated?
@@ -194,5 +197,17 @@ class TicketController < Ramaze::Controller
     end
     
     redirect Rs( :view, ticket_id )
+  end
+  
+  private
+  
+  def normalized_priority( priority )
+    if priority < MIN_PRIORITY
+      MIN_PRIORITY
+    elsif priority > MAX_PRIORITY
+      MAX_PRIORITY
+    else
+      priority
+    end
   end
 end

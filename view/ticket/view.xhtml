@@ -54,6 +54,26 @@
         </select>
       </td>
     </tr>
+    <tr>
+      <td>Priority:</td>
+      <td>
+        <select name="priority">
+          <?r @priorities.each do |p| ?>
+            <option value="#{p}" #{'selected' if @t.priority == p}>#{p}</option>
+          <?r end ?>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Severity:</td>
+      <td>
+        <select name="severity_id">
+          <?r @severities.each do |s| ?>
+            <option value="#{s.id}" #{'selected' if @t.severity_id == s.id}>#{s.name}</option>
+          <?r end ?>
+        </select>
+      </td>
+    </tr>
     </table>
     
     <input type="submit" value="Update"/>
