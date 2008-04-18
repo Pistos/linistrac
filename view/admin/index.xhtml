@@ -13,7 +13,12 @@
 
   <table>
     <tr>
-      <td>Akismet Key:</td>
+      <td>Akismet Key:
+        <?r if @conf['akismet_key' ].empty? ?>
+          <br/>You need <a href="http://akismet.com/personal/">an Akismet API key</a>
+          for LinisTrac's anti-spam features.
+        <?r end ?>
+      </td>
       <td><input type="text" name="akismet_key" value="#{@conf['akismet_key']}"/></td>
     </tr>
     <tr>
