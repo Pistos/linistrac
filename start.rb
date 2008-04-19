@@ -14,8 +14,8 @@ require 'src/ticket-delta'
 require 'src/ticket'
 require 'src/admin'
 
-require 'ruby-debug' 
-Debugger.start
+#require 'ruby-debug' 
+#Debugger.start
 
 AuthAC.options(
   {
