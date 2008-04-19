@@ -220,9 +220,8 @@ class AdminController < Ramaze::Controller
           raise e
         end
       end
-      
-      redirect Rs( :blacklist )
     end
+    redirect Rs( :blacklist )
   end
   
   def blacklist_delete( word_id )
