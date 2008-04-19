@@ -79,7 +79,7 @@ CREATE TABLE tickets (
 );
 CREATE TABLE ticket_snapshots (
     id SERIAL,
-    ticket_id INTEGER NOT NULL REFERENCES tickets( id ),
+    ticket_id INTEGER NOT NULL REFERENCES tickets( id ) ON DELETE CASCADE,
     time_snapshot TIMESTAMP NOT NULL DEFAULT NOW(),
     changer_id INTEGER NOT NULL REFERENCES users( id ),
     
@@ -101,7 +101,7 @@ CREATE TABLE ticket_snapshots (
 
 CREATE TABLE comments (
     id SERIAL,
-    ticket_id INTEGER NOT NULL REFERENCES tickets( id ),
+    ticket_id INTEGER NOT NULL REFERENCES tickets( id ) ON DELETE CASCADE,
     time_created TIMESTAMP NOT NULL DEFAULT NOW(),
     author_id INTEGER REFERENCES users( id ),
     author_name VARCHAR( 256 ),
