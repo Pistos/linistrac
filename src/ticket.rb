@@ -9,7 +9,7 @@ class TicketController < Ramaze::Controller
   MAX_PRIORITY = 3
   
   def index
-    redirect Rs( :list )
+    redirect Rs( :create )
   end
   
   def list
