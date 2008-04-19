@@ -236,6 +236,7 @@ class AdminController < Ramaze::Controller
     requires_flag 'admin'
     
     @groups = TicketGroup.all
+    @user = session[ :user ]
   end
   
   def group_add
