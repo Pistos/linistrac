@@ -208,9 +208,11 @@ class AdminController < Ramaze::Controller
     requires_flag 'admin'
     if request.post?
       begin
+        word = request[ 'word' ]
         BlacklistedWord.create(
-          :word => request[ 'word' ]
+          :word => word
         )
+        flash[ :success ] = "'#{word}' added to blacklist."
       rescue DBI::Error => e
         if e =~ /value too long for type/
           flash[ :error ] = "That word is too long."
