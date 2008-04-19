@@ -1,0 +1,43 @@
+<h3>Ticket Groups</h3>
+
+<p>
+Use ticket groups to organize your tickets.  Ticket groups can represent
+projects, project components, categories, or whatever else your needs require.
+</p>
+
+<table class="list">
+
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+
+<?r @groups.each do |group| ?>
+
+<tr>
+<td>#{group.name}</td>
+<td>#{group.description}</td>
+</tr>
+
+<?r end ?>
+
+</table>
+
+<h4>Add New Group</h4>
+
+<form method="POST" action="/admin/group_add">
+
+  <table>
+    <tr>
+      <td>Name:</td>
+      <td><input type="text" name="name"/></td>
+    </tr>
+    <tr>
+      <td>Description:</td>
+      <td><input type="text" name="description"/></td>
+    </tr>
+  </table>
+  
+  <input type="submit" value="Add"/>
+
+</form>

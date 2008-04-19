@@ -229,4 +229,34 @@ class AdminController < Ramaze::Controller
     $dbh.d( "DELETE FROM blacklisted_words WHERE id = ?", word_id.to_i )
     redirect Rs( :blacklist )
   end
+  
+  # -----------------
+  
+  def group
+    requires_flag 'admin'
+    
+    @groups = TicketGroup.all
+  end
+  
+  def group_add
+    requires_flag 'admin'
+    if request.post?
+      begin
+        name = request[ 'name' ]
+        description = request[ 'description' ]
+        TicketGroup.create(
+          :name => name,
+          :description => description
+        )
+        flash[ :success ] = "'#{name}' group added."
+      rescue DBI::Error => e
+        if e =~ /value too long for type/
+          flash[ :error ] = "String is too long."
+        else
+          raise e
+        end
+      end
+    end
+    redirect Rs( :group )
+  end
 end
