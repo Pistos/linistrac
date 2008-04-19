@@ -127,3 +127,11 @@ div.ticket-delta ul {
     margin: 0px;
     padding: 0px 0px 0px 1em;
 }
+
+
+table#blacklisted-words {
+    margin: 1em;
+}
+table#blacklisted-words td {
+    padding-right: 1em;
+}

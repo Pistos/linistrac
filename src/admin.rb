@@ -191,6 +191,41 @@ class AdminController < Ramaze::Controller
   end
   
   def comment_view( comment_id )
+    requires_flag 'admin'
     @comment = Comment[ comment_id.to_i ]
+  end
+  
+  # -----------------
+  
+  def blacklist
+    requires_flag 'admin'
+    @user = session[ :user ]
+    
+    @words = BlacklistedWord.all
+  end
+  
+  def blacklist_add
+    requires_flag 'admin'
+    if request.post?
+      begin
+        BlacklistedWord.create(
+          :word => request[ 'word' ]
+        )
+      rescue DBI::Error => e
+        if e =~ /value too long for type/
+          flash[ :error ] = "That word is too long."
+        else
+          raise e
+        end
+      end
+      
+      redirect Rs( :blacklist )
+    end
+  end
+  
+  def blacklist_delete( word_id )
+    requires_flag 'admin'
+    $dbh.d( "DELETE FROM blacklisted_words WHERE id = ?", word_id.to_i )
+    redirect Rs( :blacklist )
   end
 end

@@ -1,0 +1,29 @@
+<h3>Blacklisted Words</h3>
+
+<p>
+If any ticket or comment uses any word in this list,
+it will automatically be considered spam.
+</p>
+
+<table id="blacklisted-words" class="list">
+
+<tr>
+<th>Word</th>
+<th>Action</th>
+</tr>
+
+<?r @words.each do |word| ?>
+  <tr>
+  <td>#{word.word}</td>
+  <td><a href="/admin/blacklist_delete/#{word.id}">Delete</a></td>
+  </tr>
+<?r end ?>
+
+</table>
+
+<form method="POST" action="/admin/blacklist_add">
+
+  <input type="text" name="word" size="20"/>
+  <input type="submit" value="Add"/>
+
+</form>

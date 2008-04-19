@@ -117,3 +117,9 @@ CREATE TABLE configuration (
     value VARCHAR( 2048 ),
     PRIMARY KEY( key )
 );
+
+CREATE TABLE blacklisted_words (
+    id SERIAL,
+    word VARCHAR( 256 ) NOT NULL,
+    PRIMARY KEY( id )
+);
