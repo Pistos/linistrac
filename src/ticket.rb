@@ -71,14 +71,18 @@ class TicketController < Ramaze::Controller
         comment_data[ :author_name ] = author_name
       end
       
-      akismet_result = Akismet.check_comment(
-        comment_data.merge( { :author_name => author_name } ),
-        request
-      )
-      
-      if akismet_result == 'true' 
-        @error = "Your comment seems to be spam; it must be approved before becoming visible."
+      if BlacklistedWord.matches?( comment_data[ :text ] + author_name )
         comment_data[ :is_spam ] = true
+      else
+        akismet_result = Akismet.check_comment(
+          comment_data.merge( { :author_name => author_name } ),
+          request
+        )
+        comment_data[ :is_spam ] = ( akismet_result == 'true' )
+      end
+      
+      if comment_data[ :is_spam ]
+        @error = "Your comment seems to be spam; it must be approved before becoming visible."
       end
       
       begin
@@ -134,15 +138,19 @@ class TicketController < Ramaze::Controller
         :tags => @tags,
       }
       
-      # Check against Akismet first
-      akismet_result = Akismet.check_ticket(
-        ticket_data.merge( :author_name => @creator_name ),
-        request
-      )
+      if BlacklistedWord.matches?( @title + @description + @tags + @creator_name )
+          ticket_data[ :is_spam ] = true
+      else
+        # Check against Akismet
+        akismet_result = Akismet.check_ticket(
+          ticket_data.merge( :author_name => @creator_name ),
+          request
+        )
+        ticket_data[ :is_spam ] = ( akismet_result == 'true' )
+      end
       
-      if akismet_result == 'true' 
+      if ticket_data[ :is_spam ]
         @error = "Your ticket seems to be spam; it must be approved before becoming visible."
-        ticket_data[ :is_spam ] = true
       end
       
       begin
