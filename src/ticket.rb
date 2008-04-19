@@ -194,8 +194,8 @@ class TicketController < Ramaze::Controller
           :priority => priority,
           :severity_id => ( severity.id if severity ),
           :group_id => ( group.id if group ),
-          :title => ( request[ 'title' ] if not request[ 'title' ].empty? ),
-          :tags => ( request[ 'tags' ] if not request[ 'tags' ].empty? ),
+          :title => ( c( request[ 'title' ] ) if not request[ 'title' ].empty? ),
+          :tags => ( c( request[ 'tags' ] ) if not request[ 'tags' ].empty? ),
         }.delete_if { |k,v| v.nil? }
         
         t.set update_hash
