@@ -41,31 +41,33 @@ div#navbar a {
     padding: 0.5em 1em;
 }
 
-div.error {
-    border: 1px solid #660000;
-    color: #660000;
-    font-weight: bold;
-    background-color: #FFEEEE;
+div.error, div.success, div.notice, .new {
+    display: none;
+}
+
+div.error, div.success, div.notice {
+    border: 1px solid;
     padding: 1em;
     margin: 1em 0px;
+    font-weight: bold;
+}
+
+div.error {
+    border-color: #660000;
+    color: #660000;
+    background-color: #FFEEEE;
 }
 
 div.success {
-    border: 1px solid #006600;
+    border-color: #006600;
     color: #006600;
-    font-weight: bold;
     background-color: #EEFFEE;
-    padding: 1em;
-    margin: 1em 0px;
 }
 
 div.notice {
-    border: 1px solid #666600;
+    border-color: #666600;
     color: #666600;
-    font-weight: bold;
     background-color: #FFFFEE;
-    padding: 1em;
-    margin: 1em 0px;
 }
 
 
