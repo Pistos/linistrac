@@ -87,6 +87,7 @@ class TicketController < Ramaze::Controller
       
       begin
         new_comment = Comment.create( comment_data )
+        flash[ :new ] = new_comment.id
       rescue DBI::Error => e
         case e.message
           when /text_length/

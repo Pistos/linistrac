@@ -101,8 +101,9 @@
   <?r elsif Comment === delta
     comment = delta
     next if comment.is_spam
+    @new = 'new' if comment.id == flash[ :new ]
     ?>
-    <div class="comment">
+    <div class="comment #{@new}">
       <span class="header">
         <span class="author">#{comment.author_name}</span> at
         <span class="timestamp">#{comment.time_created_s}</span>
