@@ -144,15 +144,15 @@ table.sortable thead tr th {
     background-position: center right;
     cursor: pointer;
 }
-table.sortable thead tr .headerSortUp {
-    background-image: url( '/images/desc.png' );
-    padding-right: 2em;
-}
-table.sortable thead tr .headerSortDown {
+table.sortable thead tr .sort-up {
     background-image: url( '/images/asc.png' );
     padding-right: 2em;
 }
-table.sortable thead tr .headerSortDown, table.sortable thead tr .headerSortUp {
+table.sortable thead tr .sort-down {
+    background-image: url( '/images/desc.png' );
+    padding-right: 2em;
+}
+table.sortable thead tr .sort-down, table.sortable thead tr .sort-up {
     background-color: #99BBFF;
 }
 

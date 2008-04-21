@@ -1,6 +1,10 @@
 $( document ).ready( function() {
     $( 'table.sortable' ).tablesorter(
-        { widgets: ['zebra'] }
+        {
+            widgets: ['zebra'],
+            cssAsc: 'sort-down',
+            cssDesc: 'sort-up',
+        }
     );
     $( '.error,.notice,.success' ).fadeIn( 2000 );
     
