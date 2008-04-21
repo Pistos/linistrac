@@ -84,8 +84,9 @@
 
 <?r @deltas.each do |delta|
   if TicketDelta === delta
+    @new = 'new' if delta.snapshot_id == flash[ :new ]
     ?>
-    <div class="ticket-delta">
+    <div class="ticket-delta #{@new}">
       <span class="header">
         <span class="author">#{delta.changer}</span> at
         <span class="timestamp">#{delta.time_s}</span>

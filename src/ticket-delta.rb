@@ -1,8 +1,9 @@
 class TicketDelta
-  attr_reader :time, :changer, :changes
+  attr_reader :time, :changer, :changes, :snapshot_id
   
   def initialize( ss1, ss2 )
     @time = ss2.time_snapshot
+    @snapshot_id = ss2.id
     @changer = ss2.changer
     @changes = ss1.diff( ss2 ).map { |key|
       case key
