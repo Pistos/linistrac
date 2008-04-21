@@ -212,7 +212,6 @@ class TicketController < Ramaze::Controller
         # TODO: Spam check again?  NULL time_moderated?
         if not old_ticket.diff( new_ticket ).empty?
           snapshot = TicketSnapshot.snapshoot( t, session[ :user ] )
-          #flash[ :success ] = "Ticket ##{t.id} updated."
           flash[ :new ] = snapshot.id
         else
           flash[ :notice ] = "Ticket ##{t.id} not modified."
