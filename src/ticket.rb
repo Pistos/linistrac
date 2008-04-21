@@ -27,8 +27,8 @@ class TicketController < Ramaze::Controller
     @t = Ticket[ ticket_id ]
     
     if @t.nil?
-      @error = "No such ticket (##{ticket_id})."
-      return
+      flash[ :error ] = "No such ticket (##{ticket_id})."
+      redirect Rs( :list )
     end
     
     @user = session[ :user ]
