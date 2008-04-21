@@ -100,12 +100,12 @@ table.list {
     border-collapse: collapse;
 }
 
-table.list td {
+table.list td, table.list th {
     border: 1px solid #CCCCCC;
     padding: 0.1em 0.5em;
 }
 
-table.list tr.odd-row td {
+table.list tr.odd td {
     background-color: #EEEEEE;
 }
 
@@ -135,3 +135,22 @@ table#blacklisted-words {
 table#blacklisted-words td {
     padding-right: 1em;
 }
+
+
+table.sortable thead tr th {
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+}
+table.sortable thead tr .headerSortUp {
+    background-image: url( '/images/asc.png' );
+    padding-right: 2em;
+}
+table.sortable thead tr .headerSortDown {
+    background-image: url( '/images/desc.png' );
+    padding-right: 2em;
+}
+table.sortable thead tr .headerSortDown, table.sortable thead tr .headerSortUp {
+    background-color: #99BBFF;
+}
+

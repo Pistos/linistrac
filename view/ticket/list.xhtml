@@ -1,7 +1,8 @@
 <h2>Tickets</h2>
 
-<table class="list">
+<table class="list sortable">
 
+  <thead>
   <tr>
     <th>ID</th>
     <th>Title</th>
@@ -13,10 +14,12 @@
     <th>Status</th>
     <th>Resolution</th>
   </tr>
+  </thead>
 
+  <tbody>
 <?r @tickets.each_with_index do |ticket,i| ?>
 
-  <tr #{i % 2 == 1 ? 'class="odd-row"' : ''}>
+  <tr>
     <td><a href="view/#{ticket.id}">#{ticket.id}</a></td>
     <td><a href="view/#{ticket.id}">#{ticket.title}</a></td>
     <td>#{ticket.severity}</td>
@@ -29,5 +32,6 @@
   </tr>
 
 <?r end ?>
+  </tbody>
 
 </table>

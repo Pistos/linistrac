@@ -6,15 +6,17 @@
 
 <?r else ?>
 
-  <table class="list">
+  <table class="list sortable">
 
-  <tr>
+  <thead><tr>
     <th>ID</th>
-    <th colspan="2">Actions</th>
+    <th></th>
+    <th></th>
     <th>Time</th>
     <th>Title</th>
-  </tr>
+  </tr></thead>
   
+  <tbody>
   <?r @unmoderated_tickets.each do |ticket| ?>
   
   <tr>
@@ -26,6 +28,7 @@
   </tr>
   
   <?r end ?>
+  </tbody>
   
   </table>
 
@@ -46,15 +49,18 @@
   
 <?r else ?>
 
-  <table class="list">
+  <table class="list sortable">
   
-  <tr>
+  <thead><tr>
     <th>ID</th>
-    <th colspan="3">Actions</th>
+    <th></th>
+    <th></th>
+    <th></th>
     <th>Time</th>
     <th>Title</th>
-  </tr>
+  </tr></thead>
   
+  <tbody>
   <?r @tickets.each do |ticket| ?>
   
   <tr>
@@ -75,6 +81,7 @@
   </tr>
   
   <?r end ?>
+  </tbody>
   
   </table>
   
