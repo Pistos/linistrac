@@ -9,8 +9,8 @@ class TicketDelta
         when 'group_id'
           {
             :key => 'Group',
-            :old => Group[ ss1[ key ].to_i ],
-            :new => Group[ ss2[ key ].to_i ],
+            :old => TicketGroup[ ss1[ key ].to_i ],
+            :new => TicketGroup[ ss2[ key ].to_i ],
           }
         when 'resolution_id'
           {
