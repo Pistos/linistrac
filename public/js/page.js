@@ -2,8 +2,8 @@ $( document ).ready( function() {
     $( 'table.sortable' ).tablesorter(
         {
             widgets: ['zebra'],
-            cssAsc: 'sort-down',
-            cssDesc: 'sort-up',
+            cssAsc: 'sort-up',
+            cssDesc: 'sort-down',
         }
     );
     $( '.error,.notice,.success' ).fadeIn( 2000 );
