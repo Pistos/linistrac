@@ -1,0 +1,32 @@
+<h2>#{@u}'s Account</h2>
+
+<form method="POST" action="account_update">
+
+<table>
+
+<tr>
+<td>Real Name:</td>
+<td><input type="text" name="realname" value="#{@u.realname}" size="30"/></td>
+</tr>
+<tr>
+<td>E-mail:</td>
+<td><input type="text" name="email" value="#{@u.email}" size="30"/></td>
+</tr>
+<tr>
+<td>Current password:</td>
+<td><input type="password" name="old-password" size="20"/></td>
+</tr>
+<tr>
+<td>New password:</td>
+<td><input type="password" name="new-password1" size="20"/></td>
+</tr>
+<tr>
+<td>Retype new password:</td>
+<td><input type="password" name="new-password2" size="20"/></td>
+</tr>
+
+</table>
+
+<input type="submit" value="Update"/>
+
+</form>

@@ -2,6 +2,7 @@ CREATE TABLE users (
     id SERIAL,
     username VARCHAR( 32 ) NOT NULL UNIQUE,
     realname VARCHAR( 64 ),
+    email VARCHAR( 256 ),
     encrypted_password VARCHAR( 128 ) NOT NULL,
     PRIMARY KEY( id )
 );
