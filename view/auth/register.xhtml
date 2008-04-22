@@ -1,18 +1,4 @@
-<html>
-
-<head>
-<title>Register</title>
-</head>
-
-<body>
-
 <h2>Register</h2>
-
-<?r if @error ?>
-<div class="error">
-    #{@error}
-</div>
-<?r end ?>
 
 <form action="#{AuthAC.trait[ :auth_base_path ]}/register" method="POST">
 <table>
@@ -29,6 +15,10 @@
     <td><input type="password" name="password2" /></td>
   </tr>
   <tr>
+    <td>E-mail Address:</td>
+    <td><input type="text" name="email" /></td>
+  </tr>
+  <tr>
     <td>Real Name:</td>
     <td><input type="text" name="realname" /></td>
   </tr>
@@ -40,14 +30,3 @@
 * indicates required entry
 </div>
 
-<?r if @new_user ?>
-<div>
-Successfully registered #{@new_user.username} (#{@new_user.realname})
-</div>
-<?r end ?>
-
-
-
-</body>
-
-</html>

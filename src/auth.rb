@@ -22,6 +22,7 @@ class AuthenticationController < Ramaze::Controller
                         :username => request[ 'username' ],
                         :password => request[ 'password' ],
                         :realname => request[ 'realname' ],
+                        :email => request[ 'email' ],
                       }
                     )
                     @new_user = User.where( :username => @new_user.username ).first
@@ -39,7 +40,8 @@ class AuthenticationController < Ramaze::Controller
                         },
                         @new_user.username
                     )
-                    
+                    flash[ :success ] = "Successfully registered user '#{@new_user.username}'.  Welcome to LinisTrac!"
+                    login
                 else
                     @error = "Typed passwords do not match.  Please re-enter your password."
                 end
