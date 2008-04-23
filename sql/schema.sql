@@ -112,6 +112,14 @@ CREATE TABLE comments (
     CONSTRAINT has_author CHECK ( author_id IS NOT NULL OR author_name IS NOT NULL ),
     PRIMARY KEY( id )
 );
+CREATE TABLE ticket_subscriptions (
+    id SERIAL,
+    ticket_id INTEGER NOT NULL REFERENCES tickets( id ) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users( id ),
+    UNIQUE( ticket_id, user_id ),
+    PRIMARY KEY( id )
+);
+
 
 CREATE TABLE configuration (
     key VARCHAR( 256 ) NOT NULL UNIQUE,

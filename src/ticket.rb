@@ -47,6 +47,8 @@ class TicketController < Ramaze::Controller
       @deltas << TicketDelta.new( ss[ i - 1 ], s )
     end
     @deltas = @deltas.sort_by { |d| d.time }
+    
+    @subscribed = @user.subscribed_to?( @t )
   end
   
   def comment_add( ticket_id )
@@ -219,6 +221,44 @@ class TicketController < Ramaze::Controller
           flash[ :notice ] = "Ticket ##{t.id} not modified."
         end
       end
+    end
+    
+    redirect Rs( :view, ticket_id )
+  end
+  
+  def subscribe( ticket_id )
+    ticket_id = ticket_id.to_i
+    t = Ticket[ ticket_id ]
+    
+    if t.nil?
+      flash[ :error ] = "No such ticket (##{ticket_id})."
+      redirect Rs( :list )
+    end
+    
+    user = session[ :user ]
+    if user.subscribe_to( t )
+      flash[ :success ] = "You have subscribed to ticket ##{t.id}."
+    else
+      flash[ :error ] = "Failed to subscribe to ticket ##{t.id}."
+    end
+    
+    redirect Rs( :view, ticket_id )
+  end
+  
+  def unsubscribe( ticket_id )
+    ticket_id = ticket_id.to_i
+    t = Ticket[ ticket_id ]
+    
+    if t.nil?
+      flash[ :error ] = "No such ticket (##{ticket_id})."
+      redirect Rs( :list )
+    end
+    
+    user = session[ :user ]
+    if user.unsubscribe_from( t )
+      flash[ :success ] = "You are no longer subscribed to ticket ##{t.id}."
+    else
+      flash[ :error ] = "Failed to unsubscribe from ticket ##{t.id}."
     end
     
     redirect Rs( :view, ticket_id )
