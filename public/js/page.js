@@ -8,6 +8,8 @@ $( document ).ready( function() {
     );
     $( '.error,.notice,.success' ).fadeIn( 2000 );
     
-    $.scrollTo( '.new', 500 );
-    $( '.new' ).fadeIn( 2000 );
+    if( $( '.new' ).size() > 0 ) {
+        $.scrollTo( '.new', 500 );
+        $( '.new' ).fadeIn( 2000 );
+    }
 } );
