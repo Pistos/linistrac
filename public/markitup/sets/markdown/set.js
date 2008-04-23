@@ -1,20 +1,17 @@
-$( document ).ready( function() {
-    $( 'table.sortable' ).tablesorter(
-        {
-            widgets: ['zebra'],
-            cssAsc: 'sort-up',
-            cssDesc: 'sort-down',
-        }
-    );
-    $( '.error,.notice,.success' ).fadeIn( 2000 );
-    
-    if( $( '.new' ).size() > 0 ) {
-        $.scrollTo( '.new', 500 );
-        $( '.new' ).fadeIn( 2000 );
-    }
-    
-    $( '#comment-editor' ).markItUp( {
-	previewParserPath:	"/markdown_preview", // path to your Markdown parser
+// ----------------------------------------------------------------------------
+// markItUp!
+// ----------------------------------------------------------------------------
+// Copyright (C) 2007 Jay Salvat
+// http://markitup.jaysalvat.com/
+// ----------------------------------------------------------------------------
+// Markdown tags
+// http://daringfireball.net/projects/markdown/
+// http://en.wikipedia.org/wiki/Markdown/
+// ----------------------------------------------------------------------------
+// Basic set here. Feel free to add more tags
+// ----------------------------------------------------------------------------
+mySettings = {
+	previewParserPath:	"", // path to your Markdown parser
 	onShiftEnter:		{keepDefault:false,	openWith:'\n\n'},
 	markupSet: [		 
 		{name:'First Level Heading', key:"1", placeHolder:'Your title here...', openWith:"\n", 
@@ -56,5 +53,4 @@ $( document ).ready( function() {
 		{separator:'---------------'},
 		{name:'Preview', call:'preview', className:"preview"}
 	]
-    } );
-} );
+}

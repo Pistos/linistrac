@@ -1,7 +1,8 @@
 class MainController < Ramaze::Controller
-  layout '/page'
+  layout '/page', [ :index, :account ]
   
   include AuthAC
+  
   
   def index
     @user = session[ :user ]
@@ -46,5 +47,9 @@ class MainController < Ramaze::Controller
     end
     
     redirect Rs( :account )
+  end
+  
+  def markdown_preview
+    RedCloth.new( request[ 'data' ] ).to_html
   end
 end
