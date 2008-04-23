@@ -1,3 +1,5 @@
+require 'redcloth'
+
 class TicketController < Ramaze::Controller
   map '/ticket'
   layout '/page'
