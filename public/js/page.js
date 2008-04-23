@@ -13,7 +13,7 @@ $( document ).ready( function() {
         $( '.new' ).fadeIn( 2000 );
     }
     
-    $( '#comment-editor' ).markItUp( {
+    $( '#comment-editor, #description-editor' ).markItUp( {
 	previewParserPath:	"/markdown_preview", // path to your Markdown parser
 	onShiftEnter:		{keepDefault:false,	openWith:'\n\n'},
 	markupSet: [		 
