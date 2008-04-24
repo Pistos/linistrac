@@ -25,7 +25,9 @@ class Akismet
       end
       
       begin
-        http.post( post_params )
+        res = http.post( post_params )
+        Ramaze::Log.debug "Akismet: #{res.inspect}"
+        res
       rescue Exception => e
         Ramaze::Log.error "Error when posting to Akismet.  post_params:\n#{post_params.inspect}"
         raise e
@@ -83,7 +85,31 @@ class Akismet
   end
   
   def self.spam_comment( hash, request )
-    check(
+    spam(
+      {
+        'comment_type' => 'comment',
+        'comment_content' => hash[ :text ],
+        'comment_author' => hash[ :author_name ],
+      },
+      request
+    )
+  end
+  
+  def self.ham_ticket( hash, request )
+    ham(
+      {
+        'comment_type' => 'ticket',
+        'comment_author' => hash[ :author_name ],
+        'comment_content' => hash[ :description ],
+        'ticket_title' => hash[ :title ],
+        'ticket_tags' => hash[ :tags ],
+      },
+      request
+    )
+  end
+  
+  def self.ham_comment( hash, request )
+    ham(
       {
         'comment_type' => 'comment',
         'comment_content' => hash[ :text ],

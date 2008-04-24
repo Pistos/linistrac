@@ -66,6 +66,15 @@ class AdminController < Ramaze::Controller
         :is_spam => false,
         :time_moderated => Time.now
       )
+      akismet_result = Akismet.ham_ticket(
+        {
+          :description => t.description,
+          :author_name => t.creator_name,
+          :title => t.title,
+          :tags => t.tags,
+        },
+        request
+      )
       flash[ :success ] = "Approved ticket ##{ticket_id}."
     else
       flash[ :error ] = "Failed to approve ticket ##{ticket_id}."
@@ -148,6 +157,13 @@ class AdminController < Ramaze::Controller
       c.set(
         :is_spam => false,
         :time_moderated => Time.now
+      )
+      akismet_result = Akismet.ham_comment(
+        {
+          :text => c.text,
+          :author_name => c.author_name,
+        },
+        request
       )
       flash[ :success ] = "Approved comment ##{comment_id}."
     else
