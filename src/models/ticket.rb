@@ -1,4 +1,6 @@
 class Ticket < DBI::Model( :tickets )
+  include Ramaze::Helper::Link
+  
   def severity
     Severity[ severity_id ]
   end

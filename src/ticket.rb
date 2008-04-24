@@ -47,8 +47,6 @@ class TicketController < Ramaze::Controller
       @deltas << TicketDelta.new( ss[ i - 1 ], s )
     end
     @deltas = @deltas.sort_by { |d| d.time }
-    
-    @subscribed = @user.subscribed_to?( @t )
   end
   
   def comment_add( ticket_id )
@@ -227,6 +225,8 @@ class TicketController < Ramaze::Controller
   end
   
   def subscribe( ticket_id )
+    requires_login
+    
     ticket_id = ticket_id.to_i
     t = Ticket[ ticket_id ]
     

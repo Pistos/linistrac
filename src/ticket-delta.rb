@@ -50,4 +50,10 @@ class TicketDelta
   def time_s( format = '%Y-%m-%d %H:%M' )
     @time.strftime format
   end
+  
+  def to_s
+    @changes.map { |c|
+      "#{c[:key]} changed from #{c[:old]} to #{c[:new]}"
+    }.join( "\n" )
+  end
 end

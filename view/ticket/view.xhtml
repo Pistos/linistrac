@@ -82,7 +82,7 @@
 
   <h3>Change Log</h3>
 
-  <?r if @user.subscribed_to? @t ?>
+  <?r if @user and @user.subscribed_to?( @t ) ?>
     <p><a href="/ticket/unsubscribe/#{@t.id}">Unsubscribe</a></p>
   <?r else ?>
     <p><a href="/ticket/subscribe/#{@t.id}">Subscribe</a></p>
@@ -118,7 +118,6 @@
       </span>
       <div class="text">#{RedCloth.new( comment.text ).to_html}</div>
     </div>
-    
   <?r end ?>
 
 <?r end ?>
