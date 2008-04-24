@@ -77,3 +77,9 @@ INSERT INTO configuration ( key, value ) VALUES (
     'initial_resolution_id',
     ( SELECT id FROM resolutions WHERE name = 'Unresolved' )
 );
+INSERT INTO configuration ( key, value ) VALUES ( 'smtp_server', '' );
+INSERT INTO configuration ( key, value ) VALUES ( 'smtp_helo_domain', 'linis.purepistos.net' );
+INSERT INTO configuration ( key, value ) VALUES ( 'smtp_username', '' );
+INSERT INTO configuration ( key, value ) VALUES ( 'smtp_password', '' );
+INSERT INTO configuration ( key, value ) VALUES ( 'sender_address', '' );
+INSERT INTO configuration ( key, value ) VALUES ( 'site_root', '' );

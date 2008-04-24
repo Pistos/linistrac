@@ -63,4 +63,19 @@ class Ticket < DBI::Model( :tickets )
       </select>
     }
   end
+  
+  def notify_subscribers( subject, message )
+    subscribed_users.each do |u|
+      u.notify( subject, message )
+    end
+  end
+  
+  def link
+    A( "ticket ##{id}", :href => R( TicketController, :view, id ) )
+  end
+  
+  def uri
+    Configuration.get( 'site_root' ) + R( TicketController, :view, id )
+  end
+  
 end

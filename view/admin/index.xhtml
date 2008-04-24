@@ -31,6 +31,34 @@
       <td>Initial Ticket Resolution:</td>
       <td>#{ Ticket.selector( @resolutions, 'initial_resolution_id', @conf['initial_resolution_id'].to_i ) }</td>
     </tr>
+    <tr>
+      <td>Website Root URI: </td>
+      <td><input type="text" name="site_root" value="#{@conf['site_root']}" size="30"/></td>
+    </tr>
+    <tr>
+      <td>SMTP Server:
+        <?r if @conf['smtp_server' ].empty? ?>
+          <br/>You need to set the SMTP settings before e-mail subscriptions will work.
+        <?r end ?>
+      </td>
+      <td><input type="text" name="smtp_server" value="#{@conf['smtp_server']}" size="30"/></td>
+    </tr>
+    <tr>
+      <td>SMTP Username: </td>
+      <td><input type="text" name="smtp_username" value="#{@conf['smtp_username']}"/></td>
+    </tr>
+    <tr>
+      <td>SMTP Password: </td>
+      <td><input type="password" name="smtp_password" value="#{@conf['smtp_password']}"/></td>
+    </tr>
+    <tr>
+      <td>Notification Sender Address: </td>
+      <td><input type="text" name="sender_address" value="#{@conf['sender_address']}" size="30"/></td>
+    </tr>
+    <tr>
+      <td>SMTP HELO Domain: </td>
+      <td><input type="text" name="smtp_helo_domain" value="#{@conf['smtp_helo_domain']}" size="30"/></td>
+    </tr>
   </table>
   
   <input type="submit" value="Update"/>

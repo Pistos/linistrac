@@ -29,4 +29,14 @@ class User < DBI::Model( :users )
     subscribed_tickets.include? ticket
   end
   
+  def notify( subject, message )
+    Ramaze::Log.debug "E-mailing #{username}: '#{subject}'"
+    if email and not email.empty?
+      Ramaze::EmailHelper.send(
+        email,
+        '[LinisTrac] ' + subject,
+        message
+      )
+    end
+  end
 end

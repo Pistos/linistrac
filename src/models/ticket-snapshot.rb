@@ -19,4 +19,22 @@ class TicketSnapshot < DBI::Model( :ticket_snapshots )
   def time_snapshot_s
     time_snapshot.strftime "%Y-%m-%d %H:%M"
   end
+  
+  def delta
+    prev = TicketSnapshot.s1(
+      %{
+        SELECT *
+        FROM ticket_snapshots
+        WHERE
+          ticket_id = ?
+          AND id < ?
+        ORDER BY
+          id DESC
+        LIMIT 1
+      },
+      ticket_id,
+      id
+    )
+    TicketDelta.new( prev, self )
+  end
 end

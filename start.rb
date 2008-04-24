@@ -1,6 +1,7 @@
 require 'ramaze'
 require 'auth-ac'
 require 'ramaze/spec/helper/simple_http'
+require 'ramaze/contrib/email'
 
 require 'src/linis-trac'
 
@@ -28,5 +29,13 @@ AuthAC.options(
     },
   }
 )
+
+Ramaze::EmailHelper.trait( {
+  :smtp_server      => Configuration.get( 'smtp_server' ),
+  :smtp_helo_domain => Configuration.get( 'smtp_helo_domain' ),
+  :smtp_username    => Configuration.get( 'smtp_username' ),
+  :smtp_password    => Configuration.get( 'smtp_password' ),
+  :sender_address   => Configuration.get( 'sender_address' ),
+} )
 
 Ramaze.start :adapter => :mongrel, :port => 8004

@@ -83,17 +83,12 @@ class TicketController < Ramaze::Controller
         comment_data[ :is_spam ] = ( akismet_result == 'true' )
       end
       
-      if comment_data[ :is_spam ]
-        @error = "Your comment seems to be spam; it must be approved before becoming visible."
-      end
-      
       begin
         new_comment = Comment.create( comment_data )
-        flash[ :new ] = new_comment.id
       rescue DBI::Error => e
         case e.message
           when /text_length/
-            'Comment text too short.'
+            @error = 'Comment text too short.'
           when /value too long for type/
             @error = 'Text too long.'
           else
@@ -101,6 +96,20 @@ class TicketController < Ramaze::Controller
         end
       end
     
+      if new_comment.is_spam
+        flash[ :error ] = "Your comment seems to be spam; it must be approved before becoming visible."
+      else
+        flash[ :new ] = new_comment.id
+        @t.notify_subscribers(
+          "Comment on Ticket ##{@t.id}",
+          %{
+#{new_comment.author_name} has posted a new comment on ticket ##{@t.id} ( #{@t.uri} ):
+
+#{new_comment.text}
+          }
+        )
+      end
+        
       redirect Rs( :view, ticket_id )
     end
   end
@@ -213,8 +222,17 @@ class TicketController < Ramaze::Controller
         new_ticket = t.to_h
         # TODO: Spam check again?  NULL time_moderated?
         if not old_ticket.diff( new_ticket ).empty?
-          snapshot = TicketSnapshot.snapshoot( t, session[ :user ] )
+          user = session[ :user ]
+          snapshot = TicketSnapshot.snapshoot( t, user )
           flash[ :new ] = snapshot.id
+          t.notify_subscribers(
+            "Ticket ##{@t.id} updated",
+            %{
+#{user} has updated ticket ##{t.id} ( #{t.uri} ):
+
+#{snapshot.delta}
+            }
+          )
         else
           flash[ :notice ] = "Ticket ##{t.id} not modified."
         end
