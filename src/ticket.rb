@@ -1,8 +1,9 @@
 require 'redcloth'
+require 'rss/maker'
 
 class TicketController < Ramaze::Controller
   map '/ticket'
-  layout '/page'
+  layout '/page' => [ :create, :view, :list ]
   
   include AuthAC
   helper :partial
@@ -280,6 +281,53 @@ class TicketController < Ramaze::Controller
     end
     
     redirect Rs( :view, ticket_id )
+  end
+  
+  def rss( ticket_id )
+    ticket_id = ticket_id.to_i
+    t = Ticket[ ticket_id ]
+    
+    if t.nil?
+      flash[ :error ] = "No such ticket (##{ticket_id})."
+      redirect Rs( :list )
+    end
+    
+    ss = TicketSnapshot.where( :ticket_id => t.id ).sort_by { |s| s.time_snapshot }
+    @deltas = t.comments.elements
+    ss.each_with_index do |s,i|
+      next if i == 0
+      @deltas << TicketDelta.new( ss[ i - 1 ], s )
+    end
+    @deltas = @deltas.sort_by { |d| d.time }
+    
+    response.header[ 'Content-Type' ] = 'application/rss+xml'
+    RSS::Maker.make( '1.0' ) do |rss|
+      rss.channel.title = "LinisTrac Ticket ##{t.id}"
+      rss.channel.link = t.uri
+      rss.channel.description = "Changelog for LinisTrac Ticket ##{t.id}"
+      rss.channel.about = Configuration.get( 'site_root' ) + Rs( :rss, t.id )
+      rss.items.do_sort = true
+      
+      @deltas.each do |delta|
+        i = rss.items.new_item
+        case delta
+          when TicketDelta
+            i.title = "#{delta.changer} changed ticket ##{t.id}"
+            i.link = t.uri + "#delta-#{delta.id}"
+            i.date = delta.time.to_time
+            i.description = delta.changes.map { |c|
+              "#{c[:key]} changed from #{c[:old]} to #{c[:new]}"
+            }.join( "\n" )
+            
+          when Comment
+            i.title = "#{delta.author_name} commented on ticket ##{t.id}"
+            i.link = t.uri + "#comment-#{delta.id}"
+            i.date = delta.time_created.to_time
+            i.description = delta.text
+        end
+        #i[ :guid ] = RSS::Maker::RSS20::Items::Item::Guid.new( i.link )
+      end
+    end
   end
   
   private

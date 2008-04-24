@@ -56,4 +56,8 @@ class TicketDelta
       "#{c[:key]} changed from #{c[:old]} to #{c[:new]}"
     }.join( "\n" )
   end
+  
+  def id
+    @snapshot_id
+  end
 end

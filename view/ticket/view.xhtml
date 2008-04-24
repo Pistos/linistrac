@@ -82,11 +82,14 @@
 
   <h3>Change Log</h3>
 
+  <p>
   <?r if @user and @user.subscribed_to?( @t ) ?>
-    <p><a href="/ticket/unsubscribe/#{@t.id}">Unsubscribe</a></p>
+    <a href="/ticket/unsubscribe/#{@t.id}">Unsubscribe</a> |
   <?r else ?>
-    <p><a href="/ticket/subscribe/#{@t.id}">Subscribe</a></p>
+    <a href="/ticket/subscribe/#{@t.id}">Subscribe</a> |
   <?r end ?>
+    <a href="#{ Rs :rss, @t.id }">RSS</a>
+  </p>
   
 <?r @deltas.each do |delta|
   if TicketDelta === delta
@@ -96,6 +99,7 @@
       <span class="header">
         <span class="author">#{delta.changer}</span> at
         <span class="timestamp">#{delta.time_s}</span>
+        <a class="para" id="delta-#{delta.id}" href="#delta-#{delta.id}">&para;</a>
       </span>
       <div class="text">
         <ul>

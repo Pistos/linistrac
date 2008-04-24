@@ -1,6 +1,6 @@
 class BlacklistedWord < DBI::Model( :blacklisted_words )
   def self.matches?( string )
-    $dbh.sc (
+    $dbh.sc(
       %{
         SELECT EXISTS(
           SELECT 1
