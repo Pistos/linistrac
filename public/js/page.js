@@ -6,6 +6,17 @@ $( document ).ready( function() {
             cssDesc: 'sort-down',
         }
     );
+    $( '#ticket-list' ).tablesorter(
+        {
+            widgets: ['zebra'],
+            cssAsc: 'sort-up',
+            cssDesc: 'sort-down',
+            sortList: [
+                [ 6, 0 ], [ 3, 1 ], [ 7, 0 ], [ 5, 1 ]
+            ]
+        }
+    );
+    
     $( '.error,.notice,.success' ).fadeIn( 2000 );
     
     if( $( '.new' ).size() > 0 ) {
