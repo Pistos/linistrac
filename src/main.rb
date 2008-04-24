@@ -1,5 +1,5 @@
 class MainController < Ramaze::Controller
-  layout '/page', [ :index, :account ]
+  layout '/page' => [ :index, :account ]
   
   include AuthAC
   
