@@ -226,7 +226,7 @@ class TicketController < Ramaze::Controller
           snapshot = TicketSnapshot.snapshoot( t, user )
           flash[ :new ] = snapshot.id
           t.notify_subscribers(
-            "Ticket ##{@t.id} updated",
+            "Ticket ##{t.id} updated",
             %{
 #{user} has updated ticket ##{t.id} ( #{t.uri} ):
 
