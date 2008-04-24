@@ -35,6 +35,8 @@ class TicketSnapshot < DBI::Model( :ticket_snapshots )
       ticket_id,
       id
     )
-    TicketDelta.new( prev, self )
+    if prev
+      TicketDelta.new( prev, self )
+    end
   end
 end
