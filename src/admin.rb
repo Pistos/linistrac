@@ -23,6 +23,20 @@ class AdminController < Ramaze::Controller
     @resolutions = Resolution.all
     @statuses = Status.all
     
+    @num_unmod_tickets = $dbh.sc %{
+      SELECT COUNT(*)
+      FROM tickets t
+      WHERE
+        t.is_spam
+        AND t.time_moderated IS NULL
+    }
+    @num_unmod_comments = $dbh.sc %{
+      SELECT COUNT(*)
+      FROM comments c
+      WHERE
+        c.is_spam
+        AND c.time_moderated IS NULL
+    }
   end
   
   def ticket
