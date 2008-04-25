@@ -78,4 +78,10 @@ class Ticket < DBI::Model( :tickets )
     Configuration.get( 'site_root' ) + R( TicketController, :view, id )
   end
   
+  def dir_uri
+    '/uploads' / id
+  end
+  def dir
+    Ramaze::Global.public_root + dir_uri
+  end
 end

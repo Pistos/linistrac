@@ -70,10 +70,26 @@
         <input type="text" name="tags" value="#{@t.tags}" size="60"/>
       </td>
     </tr>
+    <?r if not @attachments.empty? ?>
+    <tr>
+      <td>Attachments:</td>
+      <td>
+        <?r @attachments.each do |att| ?>
+          <a href="#{att[:uri_path]}">#{att[:basename]}</a>,
+        <?r end ?>
+      </td>
+    </tr>
+    <?r end ?>
     </table>
     
     <input type="submit" value="Update"/>
   </form>
+  
+  <form method="POST" action="/ticket/attach_file/#{@t.id}" enctype="multipart/form-data">
+    Attachment: <input type="file" name="attachment"/><br/>
+    <input type="submit" value="Attach"/>
+  </form>
+  
 <?r else ?>
   <p>(<a href="/auth/login">Login</a> to update this ticket)</p>
 <?r end ?>

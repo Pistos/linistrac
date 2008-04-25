@@ -83,3 +83,4 @@ INSERT INTO configuration ( key, value ) VALUES ( 'smtp_username', '' );
 INSERT INTO configuration ( key, value ) VALUES ( 'smtp_password', '' );
 INSERT INTO configuration ( key, value ) VALUES ( 'sender_address', '' );
 INSERT INTO configuration ( key, value ) VALUES ( 'site_root', '' );
+INSERT INTO configuration ( key, value ) VALUES ( 'max_upload_size', '1024' );

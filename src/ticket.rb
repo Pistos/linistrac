@@ -48,6 +48,14 @@ class TicketController < Ramaze::Controller
       @deltas << TicketDelta.new( ss[ i - 1 ], s )
     end
     @deltas = @deltas.sort_by { |d| d.time }
+    
+    @attachments = Dir[ @t.dir / '*' ].map { |f|
+      basename = File.basename( f )
+      {
+        :uri_path => @t.dir_uri / basename,
+        :basename => basename
+      }
+    }
   end
   
   def comment_add( ticket_id )
@@ -113,6 +121,45 @@ class TicketController < Ramaze::Controller
         
       redirect Rs( :view, ticket_id )
     end
+  end
+  
+  def attach_file( ticket_id )
+    ticket_id = ticket_id.to_i
+    ticket = Ticket[ ticket_id ]
+    user = session[ :user ]
+    if request.post? and ticket and user
+      tempfile, filename = request[ 'attachment' ].values_at( :tempfile, :filename )
+      if tempfile.size < Configuration.get( 'max_upload_size' ).to_i * 1024
+        FileUtils.mkdir_p ticket.dir
+        original_basename = basename = File.basename( filename )
+        filepath = ticket.dir / basename
+        while File.exists? filepath
+          basename = "_" + basename
+          filepath = ticket.dir / basename
+        end
+        if basename != original_basename
+          flash[ :notice ] = "Your file was renamed from '#{original_basename}' to '#{basename}' to avoid collision with an existing file."
+        end
+        FileUtils.move( tempfile.path, filepath )
+        
+        new_comment = Comment.create(
+          :ticket_id => ticket.id,
+          :author_id => user.id,
+          :text => "Attached '#{basename}' to ticket."
+        )
+      
+        ticket.notify_subscribers(
+          "Attachment to Ticket ##{ticket.id}",
+          "#{user} has attached a file (#{}) to ticket ##{ticket.id} ( #{ticket.uri} )."
+        )
+        
+        flash[ :success ] = "'#{basename}' attached."
+      else
+        flash[ :error ] = "Uploaded file was discarded because it was too large."
+      end
+    end
+    
+    redirect Rs( :view, ticket_id )
   end
   
   def create
