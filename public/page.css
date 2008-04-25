@@ -16,7 +16,7 @@ th {
 a {
     color: #003399;
     text-decoration: none;
-    background-color: #EEEEFF;
+    background-color: #E6EEFF;
 }
 a:visited {
     color: #0055BB;
@@ -70,6 +70,14 @@ div.notice {
     background-color: #FFFFEE;
 }
 
+div#content {
+    min-height: 500px;
+}
+
+div#footer {
+    font-size: 10px;
+    text-align: center;
+}
 
 
 div.ticket {
