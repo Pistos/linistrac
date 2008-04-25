@@ -9,6 +9,10 @@ td, th {
     vertical-align: top;
 }
 
+td.form-label {
+    padding-top: 0.3em;
+}
+
 th {
     text-align: left;
 }
