@@ -69,7 +69,7 @@ class TicketController < Ramaze::Controller
     elsif request.post?
       comment_data = {
         :ticket_id => ticket_id,
-        :text => request[ 'text' ]
+        :text => request[ 'text' ].strip
       }
       if @user
         comment_data[ :author_id ] = @user.id
