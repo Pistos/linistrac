@@ -30,13 +30,33 @@ class User < DBI::Model( :users )
   end
   
   def notify( subject, message )
-    Ramaze::Log.debug "E-mailing #{username}: '#{subject}'"
     if email and not email.empty?
-      Ramaze::EmailHelper.send(
-        email,
-        '[LinisTrac] ' + subject,
-        message
-      )
+      Thread.new( email,subject, message ) do |email_, subject_, message_|
+        begin
+          delivered = false
+          40.times do |i|
+            begin
+              Ramaze::EmailHelper.send(
+                email_,
+                '[LinisTrac] ' + subject_,
+                message_
+              )
+              delivered = true
+              break
+            rescue Object => e
+              Ramaze::Log.error "Try ##{i}: #{e.message_}"
+              Ramaze::Log.error e.backtrace.join( "\n" )
+            end
+            sleep 10
+          end
+          if not delivered
+            Ramaze::Log.warn "Failed to deliver e-mail to #{email_}."
+          end
+        rescue Object => e
+          Ramaze::Log.error e.message_
+          Ramaze::Log.error e.backtrace.join( "\n" )
+        end
+      end
     end
   end
 end
