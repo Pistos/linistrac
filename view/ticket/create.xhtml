@@ -9,7 +9,7 @@
       <td>#{@status.name}</td>
     </tr>
     <tr>
-      <td>Title:</td>
+      <td class="form-label">Title:</td>
       <td><input type="text" name="title" size="60" value="#{@title}"/></td>
     </tr>
     <tr>
@@ -33,7 +33,7 @@
       </td>
     </tr>
     <tr>
-      <td>Description:</td>
+      <td class="form-label">Description:</td>
       <td><textarea id="description-editor" name="description" cols="60" rows="10">#{@description}</textarea></td>
     </tr>
     <tr>
@@ -47,9 +47,15 @@
       </td>
     </tr>
     <tr>
-      <td>Tags<br/>(comma-separated):</td>
+      <td class="form-label">Tags:<br/>(comma-separated)</td>
       <td><input type="text" name="tags" size="60" value="#{@tags}"/></td>
     </tr>
+    <?r if @user ?>
+    <tr>
+      <td>Subscribe:</td>
+      <td><input type="checkbox" name="subscribe" checked/></td>
+    </tr>
+    <?r end ?>
   </table>
   
   <input type="submit" value="Create"/>

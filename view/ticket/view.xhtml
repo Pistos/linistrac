@@ -146,17 +146,26 @@
 
 <form method="POST" id="add-comment" action="/ticket/comment_add/#{@t.id}">
   <table>
-  <tr>
-    <td>Your name:</td>
-    <td>
-      <?r if @user ?>
-        #{@user.username}
-      <?r else ?>
-        <input type="text" name="author-name" cols="30"/>
-      <?r end ?>
-    </td>
-  </tr>
-  <tr><td>Comment:</td><td><textarea id="comment-editor" name="text" rows="7" cols="60"></textarea></td></tr>
+    <tr>
+      <td>Your name:</td>
+      <td>
+        <?r if @user ?>
+          #{@user.username}
+        <?r else ?>
+          <input type="text" name="author-name" cols="30"/>
+        <?r end ?>
+      </td>
+    </tr>
+    <tr>
+      <td>Comment:</td>
+      <td><textarea id="comment-editor" name="text" rows="7" cols="60"></textarea></td>
+    </tr>
+    <?r if @user ?>
+    <tr>
+      <td>Subscribe:</td>
+      <td><input type="checkbox" name="subscribe" checked/></td>
+    </tr>
+    <?r end ?>
   </table>
   <input type="submit" value="Add Comment"/>
 </form>

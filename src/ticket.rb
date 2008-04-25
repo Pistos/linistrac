@@ -105,6 +105,7 @@ class TicketController < Ramaze::Controller
         end
       end
     
+      redirect_to = :view
       if new_comment.is_spam
         flash[ :error ] = "Your comment seems to be spam; it must be approved before becoming visible."
       else
@@ -117,9 +118,12 @@ class TicketController < Ramaze::Controller
 #{new_comment.text}
           }
         )
+        if request[ 'subscribe' ] and @user
+          redirect_to = :subscribe
+        end
       end
         
-      redirect Rs( :view, ticket_id )
+      redirect Rs( redirect_to, ticket_id )
     end
   end
   
@@ -231,7 +235,11 @@ class TicketController < Ramaze::Controller
         if @error.nil?
           TicketSnapshot.snapshoot( new_ticket, @user || User.one )
           flash[ :success ] = "Created ticket."
-          redirect Rs( :view, new_ticket.id )
+          if request[ 'subscribe' ]
+            redirect Rs( :subscribe, new_ticket.id )
+          else
+            redirect Rs( :view, new_ticket.id )
+          end
         end
       elsif @error.nil?
         @error = "Failed to create new ticket."
