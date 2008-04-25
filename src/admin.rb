@@ -13,6 +13,14 @@ class AdminController < Ramaze::Controller
       Configuration.each do |c|
         Configuration[ :key => c.key ].value = request[ c.key ]
       end
+      Ramaze::EmailHelper.trait( {
+        :smtp_server      => Configuration.get( 'smtp_server' ),
+        :smtp_helo_domain => Configuration.get( 'smtp_helo_domain' ),
+        :smtp_username    => Configuration.get( 'smtp_username' ),
+        :smtp_password    => Configuration.get( 'smtp_password' ),
+        :sender_address   => Configuration.get( 'sender_address' ),
+      } )
+
       @success = 'Settings updated.'
     end
     
