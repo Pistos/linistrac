@@ -179,6 +179,16 @@ class AdminController < Ramaze::Controller
         },
         request
       )
+      t = c.ticket
+      t.notify_subscribers(
+        "Comment on Ticket ##{t.id}",
+        %{
+#{c.author_name} has posted a new comment on ticket ##{t.id} ( #{t.uri} ):
+
+#{c.text}
+        }
+      )
+      
       flash[ :success ] = "Approved comment ##{comment_id}."
     else
       flash[ :error ] = "Failed to approve comment ##{comment_id}."
