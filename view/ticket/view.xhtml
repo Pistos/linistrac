@@ -27,7 +27,7 @@
   
   <h4 class="description-title">Description</h4>
   
-  <div class="description">#{RedCloth.new( @t.description ).to_html}</div>
+  <div class="description">#{@t.description.marked_up}</div>
 
 </div>
 
@@ -136,7 +136,7 @@
         <span class="timestamp">#{comment.time_created_s}</span>
         <a class="para" id="comment-#{comment.id}" href="#comment-#{comment.id}">&para;</a>
       </span>
-      <div class="text">#{RedCloth.new( comment.text ).to_html}</div>
+      <div class="text">#{comment.text.marked_up}</div>
     </div>
   <?r end ?>
 

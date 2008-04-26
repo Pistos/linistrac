@@ -6,6 +6,7 @@ require 'ramaze/contrib/email'
 require 'src/linis-trac'
 
 require 'src/hash'
+require 'src/markup'
 require 'src/auth'
 require 'src/access'
 require 'src/models.rb'

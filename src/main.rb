@@ -50,6 +50,6 @@ class MainController < Ramaze::Controller
   end
   
   def markdown_preview
-    RedCloth.new( request[ 'data' ] ).to_html
+    request[ 'data' ].marked_up
   end
 end
