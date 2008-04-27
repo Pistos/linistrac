@@ -1,6 +1,7 @@
 CREATE TABLE users (
     id SERIAL,
-    username VARCHAR( 32 ) NOT NULL UNIQUE,
+    username VARCHAR( 32 ) NOT NULL UNIQUE 
+        CONSTRAINT valid_username CHECK ( username ~ '^[A-Za-z0-9_-]{3,}$' ),
     realname VARCHAR( 64 ),
     email VARCHAR( 256 ),
     encrypted_password VARCHAR( 128 ) NOT NULL,
