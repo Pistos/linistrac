@@ -1,5 +1,5 @@
 $( document ).ready( function() {
-    $( 'table.sortable' ).tablesorter(
+    $( 'table.sortable:not(#ticket-list)' ).tablesorter(
         {
             widgets: ['zebra'],
             cssAsc: 'sort-up',
