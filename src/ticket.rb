@@ -45,7 +45,7 @@ class TicketController < Ramaze::Controller
       end
     else
       @selected = {
-        :statuses => @statuses,
+        :statuses => @statuses - Status.where( :name => 'Closed' ),
         :resolutions => @resolutions,
         :groups => @groups,
       }
