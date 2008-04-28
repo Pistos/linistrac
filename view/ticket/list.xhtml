@@ -1,5 +1,24 @@
 <h2>Tickets</h2>
 
+<h4><a href="#" id="filter-toggle">Filter</a></h4>
+
+<form method="POST" id="filter">
+
+<table>
+<tr>
+<td>Status:</td>
+<td>
+<?r @statuses.each do |s| ?>
+<input type="checkbox" name="status-#{s.id}" #{'checked' if @selected[ :statuses ].include?( s )}>#{s}
+<?r end ?>
+</td>
+</tr>
+</table>
+
+<input type="submit" value="Filter"/>
+
+</form>
+
 <table class="list" id="ticket-list">
 
   <thead>

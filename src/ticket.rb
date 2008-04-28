@@ -17,12 +17,38 @@ class TicketController < Ramaze::Controller
   
   def list
     @user = session[ :user ]
-    @tickets = Ticket.s %{
-      SELECT *
-      FROM tickets
-      WHERE is_spam = FALSE
-      ORDER BY id
-    }
+    
+    @resolutions = Resolution.all
+    @statuses = Status.all
+    @priorities = (MIN_PRIORITY..MAX_PRIORITY).to_a
+    @severities = Severity.all_sorted
+    @groups = TicketGroup.all
+    
+    if request.post?
+      @selected = {
+        :statuses => [],
+      }
+      @statuses.each do |s|
+        if request[ "status-#{s.id}" ]
+          @selected[ :statuses ] << s
+        end
+      end
+    else
+      @selected = {
+        :statuses => @statuses,
+      }
+    end
+    
+    @tickets = Ticket.s(
+      %{
+        SELECT *
+        FROM tickets
+        WHERE is_spam = FALSE
+          AND status_id IN ( #{@selected[ :statuses ].to_placeholders } )
+        ORDER BY id
+      },
+      *( @selected[ :statuses ].map { |s| s.id } )
+    )
   end
   
   def view( ticket_id )

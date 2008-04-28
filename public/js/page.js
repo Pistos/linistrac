@@ -17,6 +17,12 @@ $( document ).ready( function() {
         }
     );
     
+    $( '#filter-toggle' ).click( function() {
+        $( '#filter' ).toggle( 'normal' );
+        return false;
+    } );
+        
+    
     $( '.error,.notice,.success' ).fadeIn( 2000 );
     
     if( $( '.new' ).size() > 0 ) {
