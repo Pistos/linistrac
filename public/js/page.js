@@ -3,7 +3,7 @@ $( document ).ready( function() {
         {
             widgets: ['zebra'],
             cssAsc: 'sort-up',
-            cssDesc: 'sort-down',
+            cssDesc: 'sort-down'
         }
     );
     $( '#ticket-list' ).tablesorter(
