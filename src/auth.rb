@@ -54,18 +54,21 @@ class AuthenticationController < Ramaze::Controller
     end
     
     def login
-        begin
-            super( request[ :username ], request[ :password ] )  # call AuthAC::login
-            answer if inside_stack?
-            redirect( R( MainController, "index" ) )
-        rescue MissingUsernameException => e
-            # do nothing
-        rescue MissingPasswordException => e
-            # do nothing
-        rescue InvalidCredentialsException => e
-            @error = e.message
-        end
-        @user = session[ :user ]
+      if not inside_stack?
+        push request.referrer
+      end
+      begin
+        super( request[ :username ], request[ :password ] )  # call AuthAC::login
+        answer if inside_stack?
+        redirect( R( MainController, "index" ) )
+      rescue MissingUsernameException => e
+        # do nothing
+      rescue MissingPasswordException => e
+        # do nothing
+      rescue InvalidCredentialsException => e
+        @error = e.message
+      end
+      @user = session[ :user ]
     end
     
     def logout
