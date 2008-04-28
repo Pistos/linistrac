@@ -18,7 +18,7 @@ $( document ).ready( function() {
     );
     
     $( '#filter-toggle' ).click( function() {
-        $( '#filter' ).toggle( 'normal' );
+        $( '#filter' ).toggle( 'fast' );
         return false;
     } );
         
