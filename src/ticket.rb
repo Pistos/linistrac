@@ -20,22 +20,34 @@ class TicketController < Ramaze::Controller
     
     @resolutions = Resolution.all
     @statuses = Status.all
-    @priorities = (MIN_PRIORITY..MAX_PRIORITY).to_a
-    @severities = Severity.all_sorted
     @groups = TicketGroup.all
     
     if request.post?
       @selected = {
         :statuses => [],
+        :resolutions => [],
+        :groups => [],
       }
       @statuses.each do |s|
         if request[ "status-#{s.id}" ]
           @selected[ :statuses ] << s
         end
       end
+      @resolutions.each do |s|
+        if request[ "resolution-#{s.id}" ]
+          @selected[ :resolutions ] << s
+        end
+      end
+      @groups.each do |s|
+        if request[ "group-#{s.id}" ]
+          @selected[ :groups ] << s
+        end
+      end
     else
       @selected = {
         :statuses => @statuses,
+        :resolutions => @resolutions,
+        :groups => @groups,
       }
     end
     
@@ -45,9 +57,15 @@ class TicketController < Ramaze::Controller
         FROM tickets
         WHERE is_spam = FALSE
           AND status_id IN ( #{@selected[ :statuses ].to_placeholders } )
+          AND resolution_id IN ( #{@selected[ :resolutions ].to_placeholders } )
+          AND group_id IN ( #{@selected[ :groups ].to_placeholders } )
         ORDER BY id
       },
-      *( @selected[ :statuses ].map { |s| s.id } )
+      *(
+        @selected[ :statuses ].map { |s| s.id } + 
+        @selected[ :resolutions ].map { |s| s.id } + 
+        @selected[ :groups ].map { |s| s.id }
+      )
     )
   end
   

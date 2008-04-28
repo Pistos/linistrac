@@ -5,14 +5,37 @@
 <form method="POST" id="filter">
 
 <table>
-<tr>
-<td>Status:</td>
-<td>
-<?r @statuses.each do |s| ?>
-<input type="checkbox" name="status-#{s.id}" #{'checked' if @selected[ :statuses ].include?( s )}>#{s}
-<?r end ?>
-</td>
-</tr>
+
+  <tr>
+  <td>Statuses:</td>
+  <td>
+  <input type="checkbox" class="toggle-all" #{'checked' if @statuses == @selected[ :statuses ]}/>All
+  <?r @statuses.each do |s| ?>
+  <input type="checkbox" name="status-#{s.id}" #{'checked' if @selected[ :statuses ].include?( s )}>#{s}
+  <?r end ?>
+  </td>
+  </tr>
+
+  <tr>
+  <td>Resolutions:</td>
+  <td>
+  <input type="checkbox" class="toggle-all" #{'checked' if @resolutions == @selected[ :resolutions ] }/>All
+  <?r @resolutions.each do |s| ?>
+  <input type="checkbox" name="resolution-#{s.id}" #{'checked' if @selected[ :resolutions ].include?( s )}>#{s}
+  <?r end ?>
+  </td>
+  </tr>
+
+  <tr>
+  <td>Groups:</td>
+  <td>
+  <input type="checkbox" class="toggle-all" #{'checked' if @groups == @selected[ :groups ] }/>All
+  <?r @groups.each do |s| ?>
+  <input type="checkbox" name="group-#{s.id}" #{'checked' if @selected[ :groups ].include?( s )}>#{s}
+  <?r end ?>
+  </td>
+  </tr>
+
 </table>
 
 <input type="submit" value="Filter"/>

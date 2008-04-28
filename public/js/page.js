@@ -22,6 +22,17 @@ $( document ).ready( function() {
         return false;
     } );
         
+    $( '.toggle-all' ).click( function() {
+        var checked = this.checked;
+        $(this).siblings().each( function() {
+            $(this).get(0).checked = checked;
+        } );
+    } );
+    $( '.toggle-all ~ :checkbox' ).click( function() {
+        if( ! this.checked ) {
+            $(this).siblings( '.toggle-all' ).get(0).checked = false;
+        }
+    } );
     
     $( '.error,.notice,.success' ).fadeIn( 2000 );
     
