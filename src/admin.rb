@@ -3,6 +3,7 @@ class AdminController < Ramaze::Controller
   layout '/page'
   
   include AuthAC
+  helper :sendfile
   
   def index
     requires_flag 'admin'
@@ -362,5 +363,16 @@ class AdminController < Ramaze::Controller
       end
     end
     redirect Rs( :backup )
+  end
+  
+  def download_backup( backup_filename )
+    requires_flag 'admin'
+    backup_dir = Ramaze::Global.root + "/backups"
+    backups = Dir[ backup_dir / '*' ].map { |f| File.basename( f ) }
+    if not backups.include?( backup_filename )
+      flash[ :error ] = "No such backup file '#{backup_filename}'."
+    else
+      send_file( backup_dir / backup_filename )
+    end
   end
 end
