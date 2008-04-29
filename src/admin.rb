@@ -308,4 +308,59 @@ class AdminController < Ramaze::Controller
     end
     redirect Rs( :group )
   end
+  
+  # -----------------
+  
+  def backup
+    requires_flag 'admin'
+    @user = session[ :user ]
+    
+    @dumper_missing = ( `pg_dump --help`.size < 80 )
+    
+    backup_dir = Ramaze::Global.root + "/backups"
+    
+    if request.post? and not @dumper_missing
+      begin
+        FileUtils.mkdir_p backup_dir
+        backup_file = backup_dir / Time.now.strftime( "linis-trac-backup-%Y-%m-%d.sql" )
+        `pg_dump -O -U #{LinisTrac::DB_USER} #{LinisTrac::DB_NAME} > #{backup_file}`
+        @success = "Created #{backup_file}."
+      rescue Object => e
+        Ramaze::Log.error e.message
+        Ramaze::Log.error e.backtrace.join( "\n" )
+        @error = "Failed to make backup: #{e.message}"
+      end
+    end
+    
+    @backups = Dir[ backup_dir / '*' ].map { |f| File.basename( f ) }
+  end
+  
+  def restore( backup_filename )
+    requires_flag 'admin'
+    backup_dir = Ramaze::Global.root + "/backups"
+    backups = Dir[ backup_dir / '*' ].map { |f| File.basename( f ) }
+    if not backups.include?( backup_filename )
+      flash[ :error ] = "No such backup file '#{backup_filename}'."
+    else
+      begin
+        Ramaze::Log.debug "Drop schema:"
+        output = `cat '#{Ramaze::Global.root}/sql/drop-schema.sql' | psql -U #{LinisTrac::DB_USER} #{LinisTrac::DB_NAME}`
+        Ramaze::Log.debug output
+        if output =~ /ERROR/m
+          raise "Errors during schema drop.  See Ramaze log."
+        end
+        
+        Ramaze::Log.debug "Restoration:"
+        output = `cat '#{backup_dir/backup_filename}' | psql -U #{LinisTrac::DB_USER} #{LinisTrac::DB_NAME}`
+        Ramaze::Log.debug output
+        
+        flash[ :success ] = "Restored database from #{backup_filename}."
+      rescue Object => e
+        Ramaze::Log.error e.message
+        Ramaze::Log.error e.backtrace.join( "\n" )
+        flash[ :error ] = "Failed to restore backup: #{e.message}"
+      end
+    end
+    redirect Rs( :backup )
+  end
 end
