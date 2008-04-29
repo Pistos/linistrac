@@ -4,6 +4,7 @@ require 'ramaze/spec/helper/simple_http'
 require 'ramaze/contrib/email'
 
 require 'src/linis-trac'
+require './database-config'
 
 require 'src/hash'
 require 'src/markup'

@@ -1,6 +1,6 @@
 require 'm4dbi'
 
-$dbh = DBI.connect( "DBI:Pg:linis-trac", "linis", "linis" )
+$dbh = DBI.connect( "DBI:Pg:#{LinisTrac::DB_NAME}", LinisTrac::DB_USER , LinisTrac::DB_PASSWORD )
 
 acquire 'src/models/*.rb'
 
