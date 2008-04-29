@@ -1,0 +1,37 @@
+<h2>Backup</h2>
+
+<table class="list">
+<tr>
+<th>Backup File</th>
+<th colspan="2">Action</th>
+</tr>
+<?r @backups.each do |b| ?>
+<tr>
+<td>#{b}</td>
+<td><a href="/admin/restore/#{CGI.escape(b)}">Restore</a></td>
+<td>Download</td>
+</tr>
+<?r end ?>
+</table>
+
+<?r if @dumper_missing ?>
+
+<div class="error">
+  Backups rely on the database software's dump utility.  For PostgreSQL
+  this is pg_dump.  Please ensure the dumper utility is installed and
+  is executable by LinisTrac.
+</div>
+  
+<?r else ?>
+
+<form method="POST">
+
+<table>
+
+</table>
+
+<input type="submit" value="Create Backup"/>
+
+</form>
+
+<?r end ?>

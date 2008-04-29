@@ -1,0 +1,15 @@
+DROP TABLE blacklisted_words;
+DROP TABLE configuration;
+DROP TABLE ticket_subscriptions;
+DROP TABLE comments;
+DROP TABLE ticket_snapshots;
+DROP TABLE tickets;
+DROP TABLE ticket_groups;
+DROP TABLE resolutions;
+DROP TABLE statuses;
+DROP TABLE severities;
+DROP TABLE users_groups;
+DROP TABLE user_groups_flags;
+DROP TABLE user_groups;
+DROP TABLE flags;
+DROP TABLE users;
