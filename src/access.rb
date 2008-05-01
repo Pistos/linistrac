@@ -16,3 +16,9 @@ class AccessController < Ramaze::Controller
     end
 end
 
+module AuthAC
+  def deny_access
+    flash[ :error ] = "Access denied."
+    call( R( AuthenticationController, :login ) )
+  end
+end

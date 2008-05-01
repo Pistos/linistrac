@@ -54,7 +54,7 @@ class AuthenticationController < Ramaze::Controller
     end
     
     def login
-      if not inside_stack?
+      if not inside_stack? and request.referrer !~ /logout/
         push request.referrer
       end
       begin
