@@ -12,8 +12,9 @@ projects, project components, categories, or whatever else your needs require.
 <th>Description</th>
 </tr>
 
-<?r @groups.each do |group| ?>
-  #{ @group = group; @depth = 0; render_template 'one_group.xhtml' }
+<?r
+@groups.each do |group| ?>
+  #{ render_template 'one_group.xhtml', :group => group, :depth => 0 }
 <?r end ?>
 
 </table>

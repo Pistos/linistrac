@@ -6,7 +6,6 @@
 </tr>
 
 <?r
-@depth += 1
 @group.children.each do |g| ?>
-  #{ @group = g; render_template 'one_group.xhtml' }
+  #{ render_template 'one_group.xhtml', :group => g, :depth => @depth + 1 }
 <?r end ?>
