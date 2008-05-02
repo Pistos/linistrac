@@ -72,7 +72,9 @@ class AuthenticationController < Ramaze::Controller
     end
     
     def logout
-        super
+        super  # AuthAC::logout
+        flash[ :success ] = "You have logged out."
+        redirect R( MainController, '/' )
     end
     
     # Example page that shows the login state.
