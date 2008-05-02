@@ -1,0 +1,10 @@
+<tr>
+<td>
+<span style="padding-left: #{@depth}em;">#{@group.name}</span>
+</td>
+<td>#{@group.description}</td>
+</tr>
+
+<?r @group.children.each do |g| ?>
+  #{ render_action( :one_group, 'group_id' => g.id, 'depth' => ( @depth + 1 ) ) }
+<?r end ?>

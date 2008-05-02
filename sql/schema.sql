@@ -59,6 +59,7 @@ CREATE TABLE ticket_groups (
     id SERIAL,
     name VARCHAR( 256 ) NOT NULL,
     description VARCHAR( 4096 ) NOT NULL,
+    parent_id INTEGER REFERENCES ticket_groups( id ),
     PRIMARY KEY( id )
 );
 

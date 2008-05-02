@@ -5,7 +5,7 @@ Use ticket groups to organize your tickets.  Ticket groups can represent
 projects, project components, categories, or whatever else your needs require.
 </p>
 
-<table class="list">
+<table class="list sortable">
 
 <tr>
 <th>Name</th>
@@ -13,12 +13,7 @@ projects, project components, categories, or whatever else your needs require.
 </tr>
 
 <?r @groups.each do |group| ?>
-
-<tr>
-<td>#{group.name}</td>
-<td>#{group.description}</td>
-</tr>
-
+  #{ render_action( :one_group, 'group_id' => group.id ) }
 <?r end ?>
 
 </table>
@@ -33,8 +28,19 @@ projects, project components, categories, or whatever else your needs require.
       <td><input type="text" name="name"/></td>
     </tr>
     <tr>
+      <td>Subgroup of:</td>
+      <td>
+        <select name="parent_id">
+          <option value="">(none)</option>
+          <?r @groups.each do |group| ?>
+            <option value="#{group.id}">#{group.name}</option>
+          <?r end ?>
+        </select>
+      </td>
+    </tr>
+    <tr>
       <td>Description:</td>
-      <td><input type="text" name="description"/></td>
+      <td><input type="text" name="description" size="60"/></td>
     </tr>
   </table>
   

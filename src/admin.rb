@@ -1,6 +1,14 @@
 class AdminController < Ramaze::Controller
   map '/admin'
-  layout '/page'
+  layout '/page' => [
+    :index,
+    :ticket,
+    :comment,
+    :comment_view,
+    :blacklist,
+    :group,
+    :backup,
+  ]
   
   include AuthAC
   helper :sendfile
@@ -284,7 +292,7 @@ class AdminController < Ramaze::Controller
   def group
     requires_flag 'admin'
     
-    @groups = TicketGroup.all
+    @groups = TicketGroup.root_groups
     @user = session[ :user ]
   end
   
@@ -294,9 +302,11 @@ class AdminController < Ramaze::Controller
       begin
         name = request[ 'name' ]
         description = request[ 'description' ]
+        parent_id = request[ 'parent_id' ].to_i if request[ 'parent_id' ]
         TicketGroup.create(
           :name => name,
-          :description => description
+          :description => description,
+          :parent_id => parent_id
         )
         flash[ :success ] = "'#{name}' group added."
       rescue DBI::Error => e
@@ -308,6 +318,11 @@ class AdminController < Ramaze::Controller
       end
     end
     redirect Rs( :group )
+  end
+  
+  def one_group
+    @group = TicketGroup[ request[ 'group_id' ].to_i ]
+    @depth = request[ 'depth' ].to_i
   end
   
   # -----------------
