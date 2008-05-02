@@ -320,11 +320,6 @@ class AdminController < Ramaze::Controller
     redirect Rs( :group )
   end
   
-  def one_group
-    @group = TicketGroup[ request[ 'group_id' ].to_i ]
-    @depth = request[ 'depth' ].to_i
-  end
-  
   # -----------------
   
   def backup

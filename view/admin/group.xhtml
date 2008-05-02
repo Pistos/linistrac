@@ -13,7 +13,7 @@ projects, project components, categories, or whatever else your needs require.
 </tr>
 
 <?r @groups.each do |group| ?>
-  #{ render_action( :one_group, 'group_id' => group.id ) }
+  #{ @group = group; @depth = 0; render_template 'one_group.xhtml' }
 <?r end ?>
 
 </table>

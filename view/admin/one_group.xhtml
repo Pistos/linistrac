@@ -5,6 +5,8 @@
 <td>#{@group.description}</td>
 </tr>
 
-<?r @group.children.each do |g| ?>
-  #{ render_action( :one_group, 'group_id' => g.id, 'depth' => ( @depth + 1 ) ) }
+<?r
+@depth += 1
+@group.children.each do |g| ?>
+  #{ @group = g; render_template 'one_group.xhtml' }
 <?r end ?>
