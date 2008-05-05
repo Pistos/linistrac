@@ -1,6 +1,8 @@
 var show_child_groups = function() {
     var id = $(this).val();
     $(this).siblings( '.group-selector' ).hide();
+    $( '[name="group_id"]' ).removeAttr( 'name' );
+    $(this).attr( 'name', 'group_id' );
     $( '#children-of-' + id ).show();
 };
     
