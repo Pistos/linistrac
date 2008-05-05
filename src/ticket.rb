@@ -215,7 +215,7 @@ class TicketController < Ramaze::Controller
     @priorities = (MIN_PRIORITY..MAX_PRIORITY)
     @status = Status[ Configuration.get( 'initial_status_id' ) ]
     @resolution = Resolution[ Configuration.get( 'initial_resolution_id' ) ]
-    @groups = TicketGroup.all
+    @groups = TicketGroup.root_groups
     
     @description = c request[ 'description' ]
     @title = c request[ 'title' ]

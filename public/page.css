@@ -180,3 +180,7 @@ table.sortable thead tr .sort-down, table.sortable thead tr .sort-up {
 #filter {
     display: none;
 }
+
+.child-group {
+    display: none;
+}

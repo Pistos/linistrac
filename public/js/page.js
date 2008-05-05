@@ -1,3 +1,9 @@
+var show_child_groups = function() {
+    var id = $(this).val();
+    $(this).siblings( '.group-selector' ).hide();
+    $( '#children-of-' + id ).show();
+};
+    
 $( document ).ready( function() {
     $( 'table.sortable:not(#ticket-list)' ).tablesorter(
         {
@@ -33,6 +39,11 @@ $( document ).ready( function() {
             $(this).siblings( '.toggle-all' ).get(0).checked = false;
         }
     } );
+    
+    $( '.group-selector > select' ).click( show_child_groups );
+    $( '.group-selector > select' ).change( show_child_groups );
+    
+    // ---------------------
     
     $( '.error,.notice,.success' ).fadeIn( 2000 );
     

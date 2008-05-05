@@ -39,11 +39,7 @@
     <tr>
       <td>Group:</td>
       <td>
-        <select name="group_id">
-          <?r @groups.each do |g| ?>
-            <option value="#{g.id}" #{g.id == @group_id ? 'selected' : '' }>#{g.name}</option>
-          <?r end ?>
-        </select>
+        #{ render_template 'group_selector.xhtml', :groups => @groups }
       </td>
     </tr>
     <tr>
