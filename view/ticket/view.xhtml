@@ -54,9 +54,10 @@
     </tr>
     <tr>
       <td>Group:</td>
-      <td>#{ Ticket.selector( @groups, 'group_id', @t.group_id ) }</td>
-      <td></td>
-      <td></td>
+      <td colspan="3">#{ render_template(
+        'group_selector.xhtml',
+        :groups => @groups
+      ) }</td>
     </tr>
     <tr>
       <td>Title:</td>

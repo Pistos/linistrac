@@ -3,6 +3,11 @@ var show_child_groups = function() {
     $(this).siblings( '.group-selector' ).hide();
     $( '[name="group_id"]' ).removeAttr( 'name' );
     $(this).attr( 'name', 'group_id' );
+    
+    // Deselect child selection
+    $( '#children-of-' + id + ' > select option' ).eq( 0 ).attr( 'selected', 'true' );
+    $( '#children-of-' + id + ' .group-selector' ).hide();
+    
     $( '#children-of-' + id ).show();
 };
     

@@ -181,6 +181,6 @@ table.sortable thead tr .sort-down, table.sortable thead tr .sort-up {
     display: none;
 }
 
-.child-group {
+.hidden-group {
     display: none;
 }

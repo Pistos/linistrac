@@ -83,7 +83,8 @@ class TicketController < Ramaze::Controller
     @statuses = Status.all
     @priorities = (MIN_PRIORITY..MAX_PRIORITY).to_a
     @severities = Severity.all_sorted
-    @groups = TicketGroup.all
+    @groups = TicketGroup.root_groups
+    @selected_groups = ( @t.group.ancestors << @t.group )
     
     ss = TicketSnapshot.where( :ticket_id => @t.id ).sort_by { |s| s.time_snapshot }
     @deltas = @t.comments.elements
