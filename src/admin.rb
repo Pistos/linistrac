@@ -337,8 +337,7 @@ class AdminController < Ramaze::Controller
         `pg_dump -O -U #{LinisTrac::DB_USER} #{LinisTrac::DB_NAME} > #{backup_file}`
         @success = "Created #{backup_file}."
       rescue Object => e
-        Ramaze::Log.error e.message
-        Ramaze::Log.error e.backtrace.join( "\n" )
+        Ramaze::Log.error e
         @error = "Failed to make backup: #{e.message}"
       end
     end
@@ -367,8 +366,7 @@ class AdminController < Ramaze::Controller
         
         flash[ :success ] = "Restored database from #{backup_filename}."
       rescue Object => e
-        Ramaze::Log.error e.message
-        Ramaze::Log.error e.backtrace.join( "\n" )
+        Ramaze::Log.error e
         flash[ :error ] = "Failed to restore backup: #{e.message}"
       end
     end

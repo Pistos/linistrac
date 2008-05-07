@@ -53,8 +53,7 @@ class User < DBI::Model( :users )
             Ramaze::Log.warn "Failed to deliver e-mail to #{email_}."
           end
         rescue Object => e
-          Ramaze::Log.error e.message_
-          Ramaze::Log.error e.backtrace.join( "\n" )
+          Ramaze::Log.error e
         end
       end
     end
