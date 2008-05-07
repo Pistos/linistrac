@@ -1,9 +1,11 @@
 <?r if not @groups.empty? ?>
-  <span class="group-selector #{@css_class}" id="#{@id}">
-    <select #{ 'name="group_id"' if @groups.include? @t.group }>
+  <span class="group-selector #{'hidden-group' if @hidden}" id="#{@id}">
+    <select #{ 'name="group_id"' if @t and @groups.include?( @t.group ) }>
+      <?r if not @root ?>
       <option>(subgroup)</option>
+      <?r end ?>
       <?r @groups.each do |g| ?>
-        <option value="#{g.id}" #{ @selected_groups.include?( g ) ? 'selected' : '' }>#{g.name}</option>
+        <option value="#{g.id}" #{ @selected_groups && @selected_groups.include?( g ) ? 'selected' : '' }>#{g.name}</option>
       <?r end ?>
     </select>
     
@@ -13,7 +15,7 @@
         'group_selector.xhtml',
         {
           :groups => g.children,
-          :css_class => ( 'hidden-group' if ( @selected_groups & g.children ).empty? ),
+          :hidden => ( @selected_groups.nil? or ( @selected_groups & g.children ).empty? ),
           :id => "children-of-#{g.id}",
         }
       )

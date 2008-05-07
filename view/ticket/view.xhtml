@@ -56,7 +56,8 @@
       <td>Group:</td>
       <td colspan="3">#{ render_template(
         'group_selector.xhtml',
-        :groups => @groups
+        :groups => @groups,
+        :root => true
       ) }</td>
     </tr>
     <tr>
