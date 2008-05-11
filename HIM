@@ -8,7 +8,7 @@ Come chat about LinisTrac and get help in irc.freenode.net #ramaze or #mathetes.
 
 === Requirements
 
-- Ramaze: gem install ramaze
+- Ramaze: git clone git://github.com/manveru/ramaze.git
 - DBI: http://ruby-dbi.rubyforge.org
 - M4DBI: wget http://rome.purepistos.net/m4dbi/m4dbi-nightly.gem
 - AuthAC: http://rome.purepistos.net/auth-ac/auth-ac-latest.gem
