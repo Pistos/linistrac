@@ -68,7 +68,7 @@
     <td>#{ticket.priority}</td>
     <td>#{ticket.creator ? ticket.creator.username : 'Anonymous'}</td>
     <td>#{ticket.time_updated_s}</td>
-    <td>#{ticket.group}</td>
+    <td><a href="list/#{ticket.group}">#{ticket.group}</a></td>
     <td>#{ticket.status}</td>
     <td>#{ticket.resolution}</td>
   </tr>
