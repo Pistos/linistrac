@@ -249,6 +249,7 @@ class AdminController < Ramaze::Controller
   
   def comment_view( comment_id )
     requires_flag 'admin'
+    @user = session[ :user ]
     @comment = Comment[ comment_id.to_i ]
   end
   
