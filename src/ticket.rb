@@ -15,7 +15,7 @@ class TicketController < Ramaze::Controller
     redirect Rs( :create )
   end
   
-  def list
+  def list( group = nil )
     @user = session[ :user ]
     
     @resolutions = Resolution.all
@@ -44,10 +44,17 @@ class TicketController < Ramaze::Controller
         end
       end
     else
+      if group
+        g = TicketGroup[ group.to_i ] || TicketGroup[ :name => group ]
+        if g
+          groups = [ g ]
+        end
+      end
+      groups ||= @groups
       @selected = {
         :statuses => @statuses - Status.where( :name => 'Closed' ),
         :resolutions => @resolutions,
-        :groups => @groups,
+        :groups => groups,
       }
     end
     
