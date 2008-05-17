@@ -27,4 +27,9 @@ class TicketGroup < DBI::Model( :ticket_groups )
   def children
     TicketGroup.where( :parent_id => id )
   end
+  
+  def descendants
+    cc = children
+    cc + ( cc.map { |c| c.children } ).flatten
+  end
 end

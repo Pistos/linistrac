@@ -47,7 +47,7 @@ class TicketController < Ramaze::Controller
       if group
         g = TicketGroup[ group.to_i ] || TicketGroup[ :name => group ]
         if g
-          groups = [ g ]
+          groups = [ g, *g.descendants ]
         end
       end
       groups ||= @groups
