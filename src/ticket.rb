@@ -86,12 +86,14 @@ class TicketController < Ramaze::Controller
     )
   end
   
-  def view( ticket_id )
+  def view( ticket_id = nil )
     ticket_id = ticket_id.to_i
     @t = Ticket[ ticket_id ]
     
     if @t.nil?
-      flash[ :error ] = "No such ticket (##{ticket_id})."
+      if ticket_id != 0
+        flash[ :error ] = "No such ticket (##{ticket_id})."
+      end
       redirect Rs( :list )
     end
     
