@@ -3,7 +3,7 @@ require 'rss/maker'
 
 class TicketController < Ramaze::Controller
   map '/ticket'
-  layout '/page' => [ :create, :view, :list ]
+  layout '/page' => [ :create, :view, :list, :error ]
   
   include AuthAC
   helper :partial
@@ -13,6 +13,16 @@ class TicketController < Ramaze::Controller
   
   def index
     redirect Rs( :create )
+  end
+  
+  def error
+    @error = %{
+      Gosh golly gee willakers!  Something went wrong.  If you're feeling particularly noble
+      at the moment, you can
+      <a href="http://linis.purepistos.net/ticket/create">file a new ticket</a> about it, describing what you think happened,
+      steps to reproduce the issue, blah blah... you know the drill.
+    }
+    ""
   end
   
   def list( group = nil )
