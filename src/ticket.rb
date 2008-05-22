@@ -177,7 +177,7 @@ class TicketController < Ramaze::Controller
         @t.notify_subscribers(
           "Comment on Ticket ##{@t.id}",
           %{
-#{new_comment.author_name} has posted a new comment on ticket ##{@t.id} ( #{@t.uri} ):
+#{new_comment.author_name} has posted a new comment on ticket ##{@t.id} \"#{ticket.title}\" ( #{@t.uri} ):
 
 #{new_comment.text}
           }
@@ -218,7 +218,7 @@ class TicketController < Ramaze::Controller
       
         ticket.notify_subscribers(
           "Attachment to Ticket ##{ticket.id}",
-          "#{user} has attached a file (#{}) to ticket ##{ticket.id} ( #{ticket.uri} )."
+          "#{user} has attached a file (#{basename}) to ticket ##{ticket.id} \"#{ticket.title}\" ( #{ticket.uri} )."
         )
         
         flash[ :success ] = "'#{basename}' attached."
@@ -348,7 +348,7 @@ class TicketController < Ramaze::Controller
           t.notify_subscribers(
             "Ticket ##{t.id} updated",
             %{
-#{user} has updated ticket ##{t.id} ( #{t.uri} ):
+#{user} has updated ticket ##{t.id} \"#{ticket.title}\" ( #{t.uri} ):
 
 #{snapshot.delta}
             }
