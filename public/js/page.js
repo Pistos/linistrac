@@ -12,23 +12,30 @@ var show_child_groups = function() {
 };
     
 $( document ).ready( function() {
-    $( 'table.sortable:not(#ticket-list)' ).tablesorter(
-        {
-            widgets: ['zebra'],
-            cssAsc: 'sort-up',
-            cssDesc: 'sort-down'
-        }
-    );
-    $( '#ticket-list' ).tablesorter(
-        {
-            widgets: ['zebra'],
-            cssAsc: 'sort-up',
-            cssDesc: 'sort-down',
-            sortList: [
-                [ 6, 0 ], [ 3, 1 ], [ 7, 0 ], [ 5, 1 ]
-            ]
-        }
-    );
+    var table;
+    table = $( 'table.sortable:not(#ticket-list)' );
+    if( $( 'tbody *', table ).size() > 0 ) {
+        table.tablesorter(
+            {
+                widgets: ['zebra'],
+                cssAsc: 'sort-up',
+                cssDesc: 'sort-down'
+            }
+        );
+    }
+    table = $( '#ticket-list' );
+    if( $( 'tbody *', table ).size() > 0 ) {
+        table.tablesorter(
+            {
+                widgets: ['zebra'],
+                cssAsc: 'sort-up',
+                cssDesc: 'sort-down',
+                sortList: [
+                    [ 6, 0 ], [ 3, 1 ], [ 7, 0 ], [ 5, 1 ]
+                ]
+            }
+        );
+    }
     
     $( '#filter-toggle' ).click( function() {
         $( '#filter' ).toggle( 'fast' );

@@ -68,22 +68,30 @@ class TicketController < Ramaze::Controller
       }
     end
     
-    @tickets = Ticket.s(
-      %{
-        SELECT *
-        FROM tickets
-        WHERE is_spam = FALSE
-          AND status_id IN ( #{@selected[ :statuses ].to_placeholders } )
-          AND resolution_id IN ( #{@selected[ :resolutions ].to_placeholders } )
-          AND group_id IN ( #{@selected[ :groups ].to_placeholders } )
-        ORDER BY id
-      },
-      *(
-        @selected[ :statuses ].map { |s| s.id } + 
-        @selected[ :resolutions ].map { |s| s.id } + 
-        @selected[ :groups ].map { |s| s.id }
-      )
+    if(
+      @selected[ :statuses ].empty? or
+      @selected[ :resolutions ].empty? or
+      @selected[ :groups ].empty?
     )
+      @tickets = []
+    else
+      @tickets = Ticket.s(
+        %{
+          SELECT *
+          FROM tickets
+          WHERE is_spam = FALSE
+            AND status_id IN ( #{@selected[ :statuses ].to_placeholders } )
+            AND resolution_id IN ( #{@selected[ :resolutions ].to_placeholders } )
+            AND group_id IN ( #{@selected[ :groups ].to_placeholders } )
+          ORDER BY id
+        },
+        *(
+          @selected[ :statuses ].map { |s| s.id } + 
+          @selected[ :resolutions ].map { |s| s.id } + 
+          @selected[ :groups ].map { |s| s.id }
+        )
+      )
+    end
   end
   
   def view( ticket_id = nil )
