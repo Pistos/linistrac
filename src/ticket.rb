@@ -356,7 +356,7 @@ class TicketController < Ramaze::Controller
           t.notify_subscribers(
             "Ticket ##{t.id} updated",
             %{
-#{user} has updated ticket ##{t.id} \"#{ticket.title}\" ( #{t.uri} ):
+#{user} has updated ticket ##{t.id} \"#{t.title}\" ( #{t.uri} ):
 
 #{snapshot.delta}
             }
