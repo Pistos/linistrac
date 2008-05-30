@@ -185,7 +185,7 @@ class TicketController < Ramaze::Controller
         @t.notify_subscribers(
           "Comment on Ticket ##{@t.id}",
           %{
-#{new_comment.author_name} has posted a new comment on ticket ##{@t.id} \"#{ticket.title}\" ( #{@t.uri} ):
+#{new_comment.author_name} has posted a new comment on ticket ##{@t.id} \"#{@t.title}\" ( #{@t.uri} ):
 
 #{new_comment.text}
           }
