@@ -62,4 +62,5 @@ class MainController < Ramaze::Controller
   def markdown_preview
     request[ 'data' ].marked_up
   end
+  
 end

@@ -303,7 +303,9 @@ class AdminController < Ramaze::Controller
       begin
         name = request[ 'name' ]
         description = request[ 'description' ]
-        parent_id = request[ 'parent_id' ].to_i if request[ 'parent_id' ]
+        if request[ 'parent_id' ] and not request[ 'parent_id' ].empty?
+          parent_id = request[ 'parent_id' ].to_i
+        end
         TicketGroup.create(
           :name => name,
           :description => description,
