@@ -178,7 +178,9 @@ class TicketController < Ramaze::Controller
       end
     
       redirect_to = :view
-      if new_comment.is_spam
+      if new_comment.nil?
+        flash[ :error ] = "Failed to post comment."
+      elsif new_comment.is_spam
         flash[ :error ] = "Your comment seems to be spam; it must be approved before becoming visible."
       else
         flash[ :new ] = new_comment.id
