@@ -162,7 +162,7 @@
       <td>Comment:</td>
       <td><textarea id="comment-editor" name="text" rows="7" cols="60"></textarea></td>
     </tr>
-    <?r if @user ?>
+    <?r if @user and not @user.subscribed_to?( @t ) ?>
     <tr>
       <td>Subscribe:</td>
       <td><input type="checkbox" name="subscribe" checked/></td>

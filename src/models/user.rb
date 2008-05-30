@@ -8,12 +8,20 @@ class User < DBI::Model( :users )
   end
   
   def subscribe_to( ticket )
-    num_inserted = $dbh.i(
-      "INSERT INTO ticket_subscriptions( ticket_id, user_id ) VALUES ( ?, ? )",
-      ticket.id,
-      id
-    )
-    num_inserted > 0
+    begin
+      num_inserted = $dbh.i(
+        "INSERT INTO ticket_subscriptions( ticket_id, user_id ) VALUES ( ?, ? )",
+        ticket.id,
+        id
+      )
+      num_inserted > 0
+    rescue DBI::ProgrammingError => e
+      if e.message =~ /duplicate key violates unique constraint "ticket_subscriptions_ticket_id_key"/
+        # already subscribed; ignore
+      else
+        raise e
+      end
+    end
   end
   
   def unsubscribe_from( ticket )
