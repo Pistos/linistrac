@@ -245,9 +245,9 @@ class TicketController < Ramaze::Controller
     @resolution = Resolution[ Configuration.get( 'initial_resolution_id' ) ]
     @groups = TicketGroup.root_groups
     
-    @description = c request[ 'description' ]
-    @title = c request[ 'title' ]
-    @tags = c request[ 'tags' ]
+    @description = h request[ 'description' ]
+    @title = h request[ 'title' ]
+    @tags = h request[ 'tags' ]
     @group = request[ 'group_id' ] ? TicketGroup[ request[ 'group_id' ].to_i ] : TicketGroup.default
     @severity = request[ 'severity_id' ] ? Severity[ request[ 'severity_id' ].to_i ] : Severity.default
     @priority = normalized_priority( request[ 'priority' ] ? request[ 'priority' ].to_i : 2 )
@@ -342,8 +342,8 @@ class TicketController < Ramaze::Controller
           :priority => priority,
           :severity_id => ( severity.id if severity ),
           :group_id => ( group.id if group ),
-          :title => ( c( request[ 'title' ] ) if not request[ 'title' ].empty? ),
-          :tags => ( c( request[ 'tags' ] ) if not request[ 'tags' ].empty? ),
+          :title => ( h( request[ 'title' ] ) if not request[ 'title' ].empty? ),
+          :tags => ( h( request[ 'tags' ] ) if not request[ 'tags' ].empty? ),
         }.delete_if { |k,v| v.nil? }
         
         t.set update_hash
