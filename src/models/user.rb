@@ -1,4 +1,4 @@
-class User < DBI::Model( :users )
+class User < DBI::Model( 'users' )
   def admin?
     has_flag? 'admin'
   end
