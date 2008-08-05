@@ -8,12 +8,6 @@
 
 <h2>Login</h2>
 
-<?r if @error ?>
-<div class="error">
-    #{@error}
-</div>
-<?r end ?>
-
 <form action="#{AuthAC.trait[ :auth_base_path ]}/login" method="POST">
 <table>
   <tr>
