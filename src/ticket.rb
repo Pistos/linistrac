@@ -443,7 +443,7 @@ class TicketController < Ramaze::Controller
           when TicketDelta
             i.title = "#{delta.changer} changed ticket ##{t.id}"
             i.link = t.uri + "#delta-#{delta.id}"
-            i.date = delta.time.to_time
+            i.date = delta.time.to_s
             i.description = delta.changes.map { |c|
               "#{c[:key]} changed from #{c[:old]} to #{c[:new]}"
             }.join( "\n" )
@@ -451,7 +451,7 @@ class TicketController < Ramaze::Controller
           when Comment
             i.title = "#{delta.author_name} commented on ticket ##{t.id}"
             i.link = t.uri + "#comment-#{delta.id}"
-            i.date = delta.time_created.to_time
+            i.date = delta.time_created.to_s
             i.description = delta.text
         end
         #i[ :guid ] = RSS::Maker::RSS20::Items::Item::Guid.new( i.link )
