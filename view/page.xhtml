@@ -20,12 +20,12 @@
   <div id="navbar">
     <a href="/ticket/list">Tickets</a>
     <a href="/ticket/create">Create</a>
-    
+
     <?r if @user ?>
       <?r if @user.admin? ?>
         <a href="/admin">Admin</a>
       <?r end ?>
-    
+
       <a href="/account">Account</a>
       <a href="/auth/logout">Logout</a>
       Logged in as #{@user.username}
@@ -34,35 +34,37 @@
       <a href="/auth/login">Login</a>
     <?r end ?>
   </div>
-  
+
   <?r if @success or flash[ :success ] ?>
   <div class="success">
     #{@success || flash[ :success ]}
   </div>
   <?r end ?>
-  
+
   <?r if @error or flash[ :error ] ?>
   <div class="error">
     #{@error || flash[ :error ]}
   </div>
   <?r end ?>
-  
+
   <?r if @notice or flash[ :notice ] ?>
   <div class="notice">
     #{@notice || flash[ :notice ]}
   </div>
   <?r end ?>
-  
+
   <div id="content">
     #{@content}
   </div>
-  
+
   <div id="footer">
     <a href="http://linis.purepistos.net">LinisTrac</a><br/>
     powered by
     <a href="http://ramaze.net">Ramaze</a> and
     <a href="http://purepistos.net/m4dbi">M4DBI</a>
   </div>
+
+  <script src="http://ram.purepistos.net/ramalytics.js"></script>
 </body>
 
 </html>
