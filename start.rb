@@ -3,6 +3,8 @@ require 'auth-ac'
 require 'ramaze/spec/helper/simple_http'
 require 'ramaze/contrib/email'
 
+require 'bluecloth'
+
 require 'src/linis-trac'
 require './database-config'
 
@@ -17,7 +19,7 @@ require 'src/ticket-delta'
 require 'src/ticket'
 require 'src/admin'
 
-#require 'ruby-debug' 
+#require 'ruby-debug'
 #Debugger.start
 
 AuthAC.options(
