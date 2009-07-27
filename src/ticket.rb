@@ -4,17 +4,17 @@ require 'rss/maker'
 class TicketController < Ramaze::Controller
   map '/ticket'
   layout '/page' => [ :create, :view, :list, :error ]
-  
+
   include AuthAC
   helper :partial
-  
+
   MIN_PRIORITY = 1
   MAX_PRIORITY = 3
-  
+
   def index
     redirect Rs( :create )
   end
-  
+
   def error
     @error = %{
       Gosh golly gee willakers!  Something went wrong.  If you're feeling particularly noble
@@ -24,14 +24,14 @@ class TicketController < Ramaze::Controller
     }
     ""
   end
-  
+
   def list( group = nil )
     @user = session[ :user ]
-    
+
     @resolutions = Resolution.all
     @statuses = Status.all
     @groups = TicketGroup.all
-    
+
     if request.post?
       @selected = {
         :statuses => [],
@@ -67,7 +67,7 @@ class TicketController < Ramaze::Controller
         :groups => groups,
       }
     end
-    
+
     if(
       @selected[ :statuses ].empty? or
       @selected[ :resolutions ].empty? or
@@ -86,25 +86,25 @@ class TicketController < Ramaze::Controller
           ORDER BY id
         },
         *(
-          @selected[ :statuses ].map { |s| s.id } + 
-          @selected[ :resolutions ].map { |s| s.id } + 
+          @selected[ :statuses ].map { |s| s.id } +
+          @selected[ :resolutions ].map { |s| s.id } +
           @selected[ :groups ].map { |s| s.id }
         )
       )
     end
   end
-  
+
   def view( ticket_id = nil )
     ticket_id = ticket_id.to_i
     @t = Ticket[ ticket_id ]
-    
+
     if @t.nil?
       if ticket_id != 0
         flash[ :error ] = "No such ticket (##{ticket_id})."
       end
       redirect Rs( :list )
     end
-    
+
     @user = session[ :user ]
     @resolutions = Resolution.all
     @statuses = Status.all
@@ -129,12 +129,12 @@ class TicketController < Ramaze::Controller
       }
     }
   end
-  
+
   def comment_add( ticket_id )
     ticket_id = ticket_id.to_i
     @t = Ticket[ ticket_id ]
     @user = session[ :user ]
-    
+
     if @t.nil?
       flash[ :error ] = "No such ticket (##{ticket_id})."
       redirect Rs( :list )
@@ -153,7 +153,7 @@ class TicketController < Ramaze::Controller
         end
         comment_data[ :author_name ] = author_name
       end
-      
+
       if BlacklistedWord.matches?( comment_data[ :text ] + author_name )
         comment_data[ :is_spam ] = true
       else
@@ -163,7 +163,7 @@ class TicketController < Ramaze::Controller
         )
         comment_data[ :is_spam ] = ( akismet_result == 'true' )
       end
-      
+
       begin
         new_comment = Comment.create( comment_data )
       rescue DBI::Error => e
@@ -176,7 +176,7 @@ class TicketController < Ramaze::Controller
             raise e
         end
       end
-    
+
       redirect_to = :view
       if new_comment.nil?
         flash[ :error ] = "Failed to post comment."
@@ -196,11 +196,11 @@ class TicketController < Ramaze::Controller
           redirect_to = :subscribe
         end
       end
-        
+
       redirect Rs( redirect_to, ticket_id )
     end
   end
-  
+
   def attach_file( ticket_id )
     ticket_id = ticket_id.to_i
     ticket = Ticket[ ticket_id ]
@@ -219,51 +219,51 @@ class TicketController < Ramaze::Controller
           flash[ :notice ] = "Your file was renamed from '#{original_basename}' to '#{basename}' to avoid collision with an existing file."
         end
         FileUtils.move( tempfile.path, filepath )
-        
+
         new_comment = Comment.create(
           :ticket_id => ticket.id,
           :author_id => user.id,
           :text => "Attached '#{basename}' to ticket."
         )
-      
+
         ticket.notify_subscribers(
           "Attachment to Ticket ##{ticket.id}",
           "#{user} has attached a file (#{basename}) to ticket ##{ticket.id} \"#{ticket.title}\" ( #{ticket.uri} )."
         )
-        
+
         flash[ :success ] = "'#{basename}' attached."
       else
         flash[ :error ] = "Uploaded file was discarded because it was too large."
       end
     end
-    
+
     redirect Rs( :view, ticket_id )
   end
-  
+
   def create
     @severities = Severity.sort_by { |s| s.ordinal }
     @priorities = (MIN_PRIORITY..MAX_PRIORITY)
     @status = Status[ Configuration.get( 'initial_status_id' ) ]
     @resolution = Resolution[ Configuration.get( 'initial_resolution_id' ) ]
     @groups = TicketGroup.root_groups
-    
+
     @description = h request[ 'description' ]
     @title = h request[ 'title' ]
     @tags = h request[ 'tags' ]
     @group = request[ 'group_id' ] ? TicketGroup[ request[ 'group_id' ].to_i ] : TicketGroup.default
     @severity = request[ 'severity_id' ] ? Severity[ request[ 'severity_id' ].to_i ] : Severity.default
     @priority = normalized_priority( request[ 'priority' ] ? request[ 'priority' ].to_i : 2 )
-    
+
     @user = session[ :user ]
     if @user
       @creator_name = @user.username
     else
       @creator_name = 'Anonymous'
     end
-    
+
     if request.post?
       new_ticket = nil
-      
+
       ticket_data = {
         :severity_id => @severity.id,
         :priority => @priority,
@@ -275,7 +275,7 @@ class TicketController < Ramaze::Controller
         :description => @description,
         :tags => @tags,
       }
-      
+
       if BlacklistedWord.matches?( @title + @description + @tags + @creator_name )
           ticket_data[ :is_spam ] = true
       else
@@ -286,11 +286,11 @@ class TicketController < Ramaze::Controller
         )
         ticket_data[ :is_spam ] = ( akismet_result == 'true' )
       end
-      
+
       if ticket_data[ :is_spam ]
         @error = "Your ticket seems to be spam; it must be approved before becoming visible."
       end
-      
+
       begin
         new_ticket = Ticket.create( ticket_data )
       rescue DBI::Error => e
@@ -320,13 +320,13 @@ class TicketController < Ramaze::Controller
       end
     end
   end
-  
+
   def delete
   end
-  
+
   def update( ticket_id )
     require_login
-    
+
     if request.post?
       ticket_id = ticket_id.to_i
       t = Ticket[ ticket_id ]
