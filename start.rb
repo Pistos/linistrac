@@ -1,7 +1,11 @@
+require 'rubygems'
+gem 'ramaze', '2009.03'
 require 'ramaze'
 require 'auth-ac'
 require 'ramaze/spec/helper/simple_http'
 require 'ramaze/contrib/email'
+
+require 'bluecloth'
 
 require 'src/linis-trac'
 require './database-config'

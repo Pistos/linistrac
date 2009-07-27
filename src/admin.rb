@@ -9,15 +9,15 @@ class AdminController < Ramaze::Controller
     :group,
     :backup,
   ]
-  
+
   include AuthAC
   helper :sendfile
-  
+
   def index
     requires_flag 'admin'
-    
+
     @user = session[ :user ]
-    
+
     if request.post?
       Configuration.each do |c|
         Configuration[ :key => c.key ].value = request[ c.key ]
@@ -32,14 +32,14 @@ class AdminController < Ramaze::Controller
 
       @success = 'Settings updated.'
     end
-    
+
     @conf = {}
     Configuration.each do |c|
       @conf[ c.key ] = c.value
     end
     @resolutions = Resolution.all
     @statuses = Status.all
-    
+
     @num_unmod_tickets = $dbh.sc %{
       SELECT COUNT(*)
       FROM tickets t
@@ -55,11 +55,11 @@ class AdminController < Ramaze::Controller
         AND c.time_moderated IS NULL
     }
   end
-  
+
   def ticket
     requires_flag 'admin'
     @user = session[ :user ]
-    
+
     @unmoderated_tickets = Ticket.s %{
       SELECT t.*
       FROM tickets t
@@ -88,14 +88,14 @@ class AdminController < Ramaze::Controller
       @page_size
     )
   end
-  
+
   def ticket_approve( ticket_id )
     requires_flag 'admin'
     t = Ticket[ ticket_id ]
     if t
       t.set(
         :is_spam => false,
-        :time_moderated => Time.now
+        :time_moderated => DateTime.now
       )
       akismet_result = Akismet.ham_ticket(
         {
@@ -112,14 +112,14 @@ class AdminController < Ramaze::Controller
     end
     redirect Rs( :ticket )
   end
-  
+
   def ticket_reject( ticket_id )
     requires_flag 'admin'
     t = Ticket[ ticket_id ]
     if t
       t.set(
         :is_spam => true,
-        :time_moderated => Time.now
+        :time_moderated => DateTime.now
       )
       akismet_result = Akismet.spam_ticket(
         {
@@ -136,10 +136,10 @@ class AdminController < Ramaze::Controller
     end
     redirect Rs( :ticket )
   end
-  
+
   def ticket_delete( ticket_id )
     requires_flag 'admin'
-    
+
     t = Ticket[ ticket_id ]
     if t and t.delete
       flash[ :success ] = "Deleted ticket ##{ticket_id}."
@@ -148,7 +148,7 @@ class AdminController < Ramaze::Controller
     end
     redirect Rs( :ticket )
   end
-  
+
   def comment
     requires_flag 'admin'
     @user = session[ :user ]
@@ -180,14 +180,14 @@ class AdminController < Ramaze::Controller
       @page_size
     )
   end
-  
+
   def comment_approve( comment_id )
     requires_flag 'admin'
     c = Comment[ comment_id ]
     if c
       c.set(
         :is_spam => false,
-        :time_moderated => Time.now
+        :time_moderated => DateTime.now
       )
       akismet_result = Akismet.ham_comment(
         {
@@ -205,21 +205,21 @@ class AdminController < Ramaze::Controller
 #{c.text}
         }
       )
-      
+
       flash[ :success ] = "Approved comment ##{comment_id}."
     else
       flash[ :error ] = "Failed to approve comment ##{comment_id}."
     end
     redirect Rs( :comment )
   end
-  
+
   def comment_reject( comment_id )
     requires_flag 'admin'
     c = Comment[ comment_id ]
     if c
       c.set(
         :is_spam => true,
-        :time_moderated => Time.now
+        :time_moderated => DateTime.now
       )
       akismet_result = Akismet.spam_comment(
         {
@@ -234,10 +234,10 @@ class AdminController < Ramaze::Controller
     end
     redirect Rs( :comment )
   end
-  
+
   def comment_delete( comment_id )
     requires_flag 'admin'
-    
+
     c = Comment[ comment_id ]
     if c and c.delete
       flash[ :success ] = "Deleted comment ##{comment_id}."
@@ -246,22 +246,22 @@ class AdminController < Ramaze::Controller
     end
     redirect Rs( :comment )
   end
-  
+
   def comment_view( comment_id )
     requires_flag 'admin'
     @user = session[ :user ]
     @comment = Comment[ comment_id.to_i ]
   end
-  
+
   # -----------------
-  
+
   def blacklist
     requires_flag 'admin'
     @user = session[ :user ]
-    
+
     @words = BlacklistedWord.all
   end
-  
+
   def blacklist_add
     requires_flag 'admin'
     if request.post?
@@ -281,22 +281,22 @@ class AdminController < Ramaze::Controller
     end
     redirect Rs( :blacklist )
   end
-  
+
   def blacklist_delete( word_id )
     requires_flag 'admin'
     $dbh.d( "DELETE FROM blacklisted_words WHERE id = ?", word_id.to_i )
     redirect Rs( :blacklist )
   end
-  
+
   # -----------------
-  
+
   def group
     requires_flag 'admin'
-    
+
     @groups = TicketGroup.root_groups
     @user = session[ :user ]
   end
-  
+
   def group_add
     requires_flag 'admin'
     if request.post?
@@ -322,17 +322,17 @@ class AdminController < Ramaze::Controller
     end
     redirect Rs( :group )
   end
-  
+
   # -----------------
-  
+
   def backup
     requires_flag 'admin'
     @user = session[ :user ]
-    
+
     @dumper_missing = ( `pg_dump --help`.size < 80 )
-    
+
     backup_dir = Ramaze::Global.root + "/backups"
-    
+
     if request.post? and not @dumper_missing
       begin
         FileUtils.mkdir_p backup_dir
@@ -344,10 +344,10 @@ class AdminController < Ramaze::Controller
         @error = "Failed to make backup: #{e.message}"
       end
     end
-    
+
     @backups = Dir[ backup_dir / '*' ].map { |f| File.basename( f ) }
   end
-  
+
   def restore( backup_filename )
     requires_flag 'admin'
     backup_dir = Ramaze::Global.root + "/backups"
@@ -362,11 +362,11 @@ class AdminController < Ramaze::Controller
         if output =~ /ERROR/m
           raise "Errors during schema drop.  See Ramaze log."
         end
-        
+
         Ramaze::Log.debug "Restoration:"
         output = `cat '#{backup_dir/backup_filename}' | psql -U #{LinisTrac::DB_USER} #{LinisTrac::DB_NAME}`
         Ramaze::Log.debug output
-        
+
         flash[ :success ] = "Restored database from #{backup_filename}."
       rescue Object => e
         Ramaze::Log.error e
@@ -375,7 +375,7 @@ class AdminController < Ramaze::Controller
     end
     redirect Rs( :backup )
   end
-  
+
   def download_backup( backup_filename )
     requires_flag 'admin'
     backup_dir = Ramaze::Global.root + "/backups"
