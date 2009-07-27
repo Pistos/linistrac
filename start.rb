@@ -17,7 +17,7 @@ require 'src/ticket-delta'
 require 'src/ticket'
 require 'src/admin'
 
-#require 'ruby-debug' 
+#require 'ruby-debug'
 #Debugger.start
 
 AuthAC.options(
@@ -40,4 +40,4 @@ Ramaze::EmailHelper.trait( {
   :sender_address   => Configuration.get( 'sender_address' ),
 } )
 
-Ramaze.start :adapter => :mongrel, :port => 8004, :sourcereload => false
+Ramaze.start :adapter => :thin, :port => 8020, :sourcereload => false
