@@ -44,4 +44,4 @@ Ramaze::EmailHelper.trait( {
   :sender_address   => Configuration.get( 'sender_address' ),
 } )
 
-Ramaze.start :adapter => :mongrel, :port => 8004, :sourcereload => false
+Ramaze.start :adapter => :thin, :port => 8004, :sourcereload => false
